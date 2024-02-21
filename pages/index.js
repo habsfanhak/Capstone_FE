@@ -3,7 +3,7 @@
 export default function Home() {
   return (
     <>
-      <p>Hi</p>
+      <p>React App Created</p>
     </>
   );
 }
