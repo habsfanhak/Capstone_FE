@@ -1,19 +1,17 @@
 import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
 import register_styles from '../styles/Register.module.css'
-import { registerRegUser } from "@/lib/userActions";
+import { login } from "@/lib/userActions";
 import { useRouter } from "next/router";
 
-export default function Register() {
+export default function Login() {
     //Router
     const router = useRouter()
 
     //Variables
     const [email, setEmail] = useState("");
-    const [fullName, setfullName] = useState("");
     const [password, setPassword] = useState("");
-    const [password2, setPassword2] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState();
+    
 
     //Messages
     const [warning, setWarning] = useState("");
@@ -23,18 +21,16 @@ export default function Register() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        if (password != password2) {
-            setWarning("Passwords are not matching.")
+
+        try{
+            await login(email, password);    
+            router.push("/")
+
+        }catch(err){
+            setWarning(err.message);
         }
-        else {
-            try{
-                await registerRegUser(email, password, fullName, phoneNumber);    
-                router.push("/login")
-            }catch(err){
-                setWarning(err.message);
-            }
-            }
-        }
+    }
+        
 
 
     return (
@@ -46,7 +42,7 @@ export default function Register() {
                 <Card.Body>
 
                     <div>
-                        <h2>Register</h2>
+                        <h2>Login</h2>
                         Enter credentials below:
                     </div>
                 </Card.Body>
@@ -76,13 +72,6 @@ export default function Register() {
 
                 <br/>
 
-                <Form.Group >
-                    <Form.Label>Full Name:</Form.Label>
-                    <Form.Control required type="text" value={fullName} id="userName" name="userName" onChange={e => setfullName(e.target.value)} />
-                </Form.Group>
-
-                <br/>
-
                 <Form.Group>
                     <Form.Label>Password:</Form.Label>
                     <Form.Control required type="password" value={password} id="password" name="password" onChange={e => setPassword(e.target.value)} />
@@ -90,23 +79,7 @@ export default function Register() {
 
                 <br />
 
-                <Form.Group>
-                    <Form.Label>Repeat Password:</Form.Label>
-                    <Form.Control required type="password" value={password2} id="password2" name="password2" onChange={e => setPassword2(e.target.value)} />
-                </Form.Group >
-
-                <br/>
-
-                <Form.Group >
-                    <Form.Label>Phone Number:</Form.Label>
-                    <Form.Control required type="number" value={phoneNumber} id="userName" name="userName" onChange={e => setPhoneNumber(e.target.value)} />
-                </Form.Group>
-
-                <br/>
-
-
-
-                <Button variant="outline-success" type="submit">Register</Button>
+                <Button variant="outline-success" type="submit">Login</Button>
 
 
             </Form>
