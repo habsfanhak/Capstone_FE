@@ -1,9 +1,13 @@
-
+import { Container } from "react-bootstrap";
 
 export default function Home() {
   return (
     <>
-      <p>React App Created</p>
+    <br/>
+
+      <Container>
+        Home Page
+      </Container>
     </>
   );
 }
