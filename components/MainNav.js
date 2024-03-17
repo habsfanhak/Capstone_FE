@@ -34,6 +34,7 @@ export default function MainNav() {
             <Navbar.Collapse className="justify-content-end">
                 {!isAuthenticated() && <Link href="/login" passHref legacyBehavior><Nav.Link href="/login" className={`${navbar_styles.custom_navbar_item} px-4`}>Login</Nav.Link></Link>}
                 {!isAuthenticated() && <Link href="/register" passHref legacyBehavior><Nav.Link href="/register" className={`${navbar_styles.custom_navbar_item} px-4`}>Register</Nav.Link></Link>}
+                {isAuthenticated() && <Link href="/bikes" passHref legacyBehavior><Nav.Link href="/bikes" className={`${navbar_styles.custom_navbar_item} px-4`}>Bikes</Nav.Link></Link>}
                 {isAuthenticated() && <Link href="/account" passHref legacyBehavior><Nav.Link href="/account" className={`${navbar_styles.custom_navbar_item} px-4`}>Account</Nav.Link></Link>}
                 {isAuthenticated() && <Nav.Link onClick={logout} className={`${navbar_styles.custom_navbar_item} px-4`}>Logout</Nav.Link>}     
             </Navbar.Collapse>
