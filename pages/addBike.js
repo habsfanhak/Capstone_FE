@@ -39,7 +39,6 @@ export default function AddBike() {
         try{
             await addBike(brand, model, type, wheelSize, frame_material, suspension_type, price, available_quantity);
             setSuccess("Bike added successfully");
-            router.push("/bikes");
         }catch(err){
             setWarning(err.message);
         }
