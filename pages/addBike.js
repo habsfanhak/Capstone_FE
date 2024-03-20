@@ -4,6 +4,8 @@ import {useRouter} from 'next/router';
 
 import { addBike } from '@/lib/userActions';
 
+import addBike_styles from '../styles/Addbike.module.css';
+
 
 
 export default function AddBike() {
@@ -48,7 +50,7 @@ export default function AddBike() {
         <>
         <br/>
         <Container>
-            <Card>
+            <Card className={addBike_styles.custom_card}>
                 <Card.Body>
                     <div>
                         <h2>Add Bike</h2>

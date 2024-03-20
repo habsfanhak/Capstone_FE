@@ -17,7 +17,7 @@ export default function Bikes() {
     return (
         <>
             <br/>
-            <center><h2>Bikes</h2></center>
+            <center><h2 style={{fontFamily: 'rethink'}}>Bikes</h2></center>
             <br/>
             <Container>
                 <Row>
@@ -46,7 +46,9 @@ export default function Bikes() {
                                         <Button variant="primary">Add to Cart</Button>
                                     </Card.Body>
                                 </Card>
+                                <br/>
                             </Col>
+                            
                         )
                     })}
                 </Row>
