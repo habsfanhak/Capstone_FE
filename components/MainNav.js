@@ -3,7 +3,7 @@ import navbar_styles from '../styles/Navbar.module.css'
 import Link from "next/link"
 import { removeToken, readToken, isAdmin } from "@/lib/userActions"
 import { useRouter } from "next/router"
-import { isAuthenticated } from "@/lib/userActions"
+import { isAuthenticated, isAuthUser } from "@/lib/userActions"
 import { useEffect } from "react"
 
 export default function MainNav() {
@@ -33,7 +33,7 @@ export default function MainNav() {
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
                 {(isAuthenticated() || !isAuthenticated()) && <Link href="/bikes" passHref legacyBehavior><Nav.Link href="/bikes" className={`${navbar_styles.custom_navbar_item} px-4`}>Bikes</Nav.Link></Link>}
-
+                {isAuthUser() && <Link href="/registeradmin" passHref legacyBehavior><Nav.Link href="/registeradmin" className={`${navbar_styles.custom_navbar_item} px-4`}>Add Admin</Nav.Link></Link>}
                 {isAdmin() && <Link href="/addBike" passHref legacyBehavior><Nav.Link href="/addBike" className={`${navbar_styles.custom_navbar_item} px-4`}>Add Bike</Nav.Link></Link>}
                 {!isAuthenticated() && <Link href="/login" passHref legacyBehavior><Nav.Link href="/login" className={`${navbar_styles.custom_navbar_item} px-4`}>Login</Nav.Link></Link>}
                 {!isAuthenticated() && <Link href="/register" passHref legacyBehavior><Nav.Link href="/register" className={`${navbar_styles.custom_navbar_item} px-4`}>Register</Nav.Link></Link>}
