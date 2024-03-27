@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isAuthenticated } from '../lib/userActions';
+import { isAdmin, isAuthUser } from '../lib/userActions';
 
 const PUBLIC_PATHS = ['/login', '/', '/register', '/bikes', '/forgotPass', '/resetSent', '/resetPass', '/addPayment'];
+const ADMIN_PATHS = ['/addBike']
+const AUTH_PATHS = ['/registeradmin']
+
 
 export default function RouteGuard(props) {
     const router = useRouter();
@@ -31,10 +35,23 @@ export default function RouteGuard(props) {
         if (!isAuthenticated() && !PUBLIC_PATHS.includes(path)) {
             setAuthorized(false);
             router.push("/login");
-        } else {
+        } 
+        else if (!isAdmin() && ADMIN_PATHS.includes(path))
+        {
+            setAuthorized(false);
+            router.push("/");
+        }
+        else if (!isAuthUser() && AUTH_PATHS.includes(path))
+        {
+            setAuthorized(false);
+            router.push("/");
+        }
+        else {
             setAuthorized(true);
         }
     }
+
+   
 
     return (
       <>

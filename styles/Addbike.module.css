@@ -1,0 +1,30 @@
+@font-face {
+    font-family: "Archivo";
+    src: local("Archivo"),
+      url("../fonts/ArchivoBlack-Regular.ttf") format("opentype");
+    font-weight: normal;
+  }
+
+@font-face {
+    font-family: "Rethink";
+    src: local("Rethink"),
+      url("../fonts/RethinkSans-VariableFont_wght.ttf") format("opentype");
+    font-weight: normal;
+  }
+
+.custom_card {
+    font-family: "Rethink";
+    color: #2F495A;
+}
+
+.custom_navbar_item {
+    font-family: "Rethink";
+    color: #00C399;
+    font-size: 22px;
+}
+
+@media (max-width: 768px) {
+    .custom_navbar {
+
+    }
+}
