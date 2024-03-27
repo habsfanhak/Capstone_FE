@@ -3,9 +3,10 @@ import { useRouter } from 'next/router';
 import { isAuthenticated } from '../lib/userActions';
 import { isAdmin, isAuthUser } from '../lib/userActions';
 
-const PUBLIC_PATHS = ['/login', '/', '/register', '/bikes'];
+const PUBLIC_PATHS = ['/login', '/', '/register', '/bikes', '/forgotPass', '/resetSent', '/resetPass', '/addPayment'];
 const ADMIN_PATHS = ['/addBike']
 const AUTH_PATHS = ['/registeradmin']
+
 
 export default function RouteGuard(props) {
     const router = useRouter();
