@@ -59,7 +59,7 @@ export default function Account() {
                                 const lastFour = cardNumString.substring(cardNumString.length - 4);
 
                                 return(
-                                    <Card style={{ width: '29rem' }}>
+                                    <Card key={card.cardNum} style={{ width: '29rem' }}>
                                         <Card.Body>
                                             <span>Debit Ending In ************{lastFour} &nbsp;&nbsp;&nbsp;&nbsp;<Link href={`/updatePayment?cardId=${card.cvv}`}>Change</Link>&nbsp;&nbsp;&nbsp;&nbsp;<Button variant="danger" onClick={() => deleteCard(card.cardNum)}>Delete</Button></span>
                                         </Card.Body>
