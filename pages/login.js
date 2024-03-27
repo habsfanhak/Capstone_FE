@@ -3,6 +3,7 @@ import { useState } from "react";
 import register_styles from '../styles/Register.module.css'
 import { login } from "@/lib/userActions";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Login() {
     //Router
@@ -75,6 +76,7 @@ export default function Login() {
                 <Form.Group>
                     <Form.Label>Password:</Form.Label>
                     <Form.Control required type="password" value={password} id="password" name="password" onChange={e => setPassword(e.target.value)} />
+                    <Link href="/forgotPass">Forgot Password?</Link>
                 </Form.Group>
 
                 <br />
