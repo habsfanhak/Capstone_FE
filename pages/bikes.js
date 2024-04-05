@@ -1,10 +1,14 @@
-import { Button, Card, ListGroup, Container, Row, Col } from 'react-bootstrap';
+import { Button, Card, ListGroup, Container, Row, Col, Form } from 'react-bootstrap';
 import { getBikes } from "@/lib/userActions";
 import { useState, useEffect } from "react";
 import bike_styles from '../styles/Bikes.module.css'
+// import text input
+
 
 export default function Bikes() {
     const [bikes, setBikes] = useState([]);
+    const [search, setSearch] = useState('');
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         async function fetchData() {
@@ -13,14 +17,49 @@ export default function Bikes() {
         }
         fetchData();
     }, []);
+
+    async function handleSearch() {
+        
+        if (search === '') {
+            const data = await getBikes();
+            setBikes(data);
+            setMessage('')
+        } else {
+            const filteredBikes = bikes.filter(bike => bike.brand.includes(search) || bike.model.includes(search));
+            setBikes(filteredBikes);
+            if (filteredBikes.length === 0) {
+                setMessage('No bikes found')
+            } else {
+                setMessage('')
+            }
+        }
+    }
     
     return (
         <>
             <br/>
             <center><h2 style={{fontFamily: 'rethink'}}>Bikes</h2></center>
             <br/>
+
+            {/* // add search bar
+            // add search button
+            // add search functionality */}
+            <Container>
+            <Row>
+                <Col>
+                <Form.Control type="text" placeholder="Search by keyword" value={search} onChange={e => setSearch(e.target.value)} />
+                </Col>
+                <Col>
+                <Button variant="outline-secondary" onClick={handleSearch}>Search</Button>
+                </Col>
+            </Row>
+            </Container>
+            <br/>
+            <br/>
+
             <Container>
                 <Row>
+                    {message && <p>{message}</p>}
                     {bikes.map((bike) => {
                         return (
                             <Col sm={12} md={4} key={bike._id}>
