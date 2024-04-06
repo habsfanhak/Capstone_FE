@@ -1,8 +1,7 @@
-import { Button, Card, ListGroup, Container, Row, Col, Form } from 'react-bootstrap';
+import { Button, Card, ListGroup, Container, Row, Col, Form, Collapse } from 'react-bootstrap';
 import { getBikes } from "@/lib/userActions";
 import { useState, useEffect } from "react";
 import bike_styles from '../styles/Bikes.module.css'
-// import text input
 
 
 export default function Bikes() {
@@ -10,12 +9,17 @@ export default function Bikes() {
     const [search, setSearch] = useState('');
     const [message, setMessage] = useState('');
 
+    
+
     useEffect(() => {
         async function fetchData() {
             const data = await getBikes();
             setBikes(data);
         }
         fetchData();
+
+        handleSearch();
+        
     }, []);
 
     async function handleSearch() {
@@ -25,16 +29,26 @@ export default function Bikes() {
             setBikes(data);
             setMessage('')
         } else {
-            const filteredBikes = bikes.filter(bike => bike.brand.includes(search) || bike.model.includes(search));
-            setBikes(filteredBikes);
-            if (filteredBikes.length === 0) {
-                setMessage('No bikes found')
+            const data = await getBikes();
+            const filteredData = data.filter(bike => bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase()));
+            if (filteredData.length === 0) {
+                setMessage('No bikes found');
             } else {
-                setMessage('')
+                setBikes(filteredData);
+                setMessage('');
             }
         }
     }
     
+    // clear search function
+    const clearSearch = async () => {
+        setSearch('');
+        setMessage('');
+        const data = await getBikes();
+        setBikes(data);
+    }
+
+
     return (
         <>
             <br/>
@@ -51,8 +65,13 @@ export default function Bikes() {
                 </Col>
                 <Col>
                 <Button variant="outline-secondary" onClick={handleSearch}>Search</Button>
+                &nbsp;&nbsp;
+                <Button variant="outline-secondary" onClick={clearSearch}>Clear Search</Button>
                 </Col>
             </Row>
+            <br/>
+            
+
             </Container>
             <br/>
             <br/>
