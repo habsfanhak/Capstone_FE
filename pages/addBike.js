@@ -80,44 +80,44 @@ export default function AddBike() {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formFile">
                             <Form.Label>Upload Image</Form.Label>
-                            <Form.Control type="file" onChange={handleFileChange}/>
+                            <Form.Control type="file" required onChange={handleFileChange}/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Brand</Form.Label>
-                            <Form.Control type="text" placeholder="Enter brand" value={brand} onChange={(e) => setBrand(e.target.value)} />
+                            <Form.Control type="text" required placeholder="Enter brand" value={brand} onChange={(e) => setBrand(e.target.value)} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Model</Form.Label>
-                            <Form.Control type="text" placeholder="Enter model" value={model} onChange={(e) => setModel(e.target.value)} />
+                            <Form.Control type="text" required placeholder="Enter model" value={model} onChange={(e) => setModel(e.target.value)} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Type</Form.Label>
-                            <Form.Control type="text" placeholder="Enter type" value={type} onChange={(e) => setType(e.target.value)} />
+                            <Form.Control type="text" required placeholder="Enter type" value={type} onChange={(e) => setType(e.target.value)} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Wheel Size</Form.Label>
-                            <Form.Control type="text" placeholder="Enter wheel size" value={wheelSize} onChange={(e) => setWheelSize(e.target.value)} />
+                            <Form.Control type="text" required placeholder="Enter wheel size" value={wheelSize} onChange={(e) => setWheelSize(e.target.value)} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Frame Material</Form.Label>
-                            <Form.Control type="text" placeholder="Enter frame material" value={frame_material} onChange={(e) => setFrame_material(e.target.value)} />
+                            <Form.Control type="text" required placeholder="Enter frame material" value={frame_material} onChange={(e) => setFrame_material(e.target.value)} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Suspension Type</Form.Label>
-                            <Form.Control type="text" placeholder="Enter suspension type" value={suspension_type} onChange={(e) => setSuspension_type(e.target.value)} />
+                            <Form.Control type="text" required placeholder="Enter suspension type" value={suspension_type} onChange={(e) => setSuspension_type(e.target.value)} />
                         </Form.Group>
                         {/* gear type */}
                         <Form.Group>
                             <Form.Label>Gear Type</Form.Label>
-                            <Form.Control type="text" placeholder="Enter gear type" value={bike.gear_type} onChange={(e) => setBike({...bike, gear_type: e.target.value})} />
+                            <Form.Control type="text" required placeholder="Enter gear type" value={bike.gear_type} onChange={(e) => setBike({...bike, gear_type: e.target.value})} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Price</Form.Label>
-                            <Form.Control type="text" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} />
+                            <Form.Control type="text" required placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Available Quantity</Form.Label>
-                            <Form.Control type="text" placeholder="Enter available quantity" value={available_quantity} onChange={(e) => setAvailable_quantity(e.target.value)} />
+                            <Form.Control type="text" required placeholder="Enter available quantity" value={available_quantity} onChange={(e) => setAvailable_quantity(e.target.value)} />
                         </Form.Group>
                         <br/>
                         <Button variant="primary" type="submit">
