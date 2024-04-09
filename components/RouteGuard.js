@@ -5,7 +5,7 @@ import { isAdmin, isAuthUser } from '../lib/userActions';
 
 const PUBLIC_PATHS = ['/login', '/', '/register', '/bikes'];
 const ADMIN_PATHS = ['/addBike']
-const AUTH_PATHS = ['/registeradmin']
+const AUTH_PATHS = ['/registeradmin', '/users']
 
 export default function RouteGuard(props) {
     const router = useRouter();
