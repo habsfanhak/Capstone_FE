@@ -35,11 +35,16 @@ export default function AddBike() {
     const [suspension_type, setSuspension_type] = useState("");
     const [price, setPrice] = useState("");
     const [available_quantity, setAvailable_quantity] = useState("");
+    const [image, setImage] = useState(null);
+
+    const handleFileChange = (event) => {
+        setImage(event.target.files[0]);
+    };
 
     async function handleSubmit(e) {
         e.preventDefault();
         try{
-            await addBike(brand, model, type, wheelSize, frame_material, suspension_type, price, available_quantity);
+            await addBike(brand, model, type, wheelSize, frame_material, suspension_type, price, available_quantity, image);
             setSuccess("Bike added successfully");
         }catch(err){
             setWarning(err.message);
@@ -73,6 +78,10 @@ export default function AddBike() {
             <Card>
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="formFile">
+                            <Form.Label>Upload Image</Form.Label>
+                            <Form.Control type="file" onChange={handleFileChange}/>
+                        </Form.Group>
                         <Form.Group>
                             <Form.Label>Brand</Form.Label>
                             <Form.Control type="text" placeholder="Enter brand" value={brand} onChange={(e) => setBrand(e.target.value)} />
