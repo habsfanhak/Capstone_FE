@@ -88,90 +88,182 @@ export default function Bikes() {
         let filteredData = data;
     
         if (mountain) {
-            filteredData = filteredData.filter(bike => bike.type == 'Mountain');
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are of type mountain
+                filteredData = filteredData.filter(bike => bike.type === 'Mountain' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+
+            filteredData = filteredData.filter(bike => bike.type === 'Mountain');
         }
         
         if (road) {
-            filteredData = filteredData.filter(bike => bike.type == 'Road');
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are of type road
+                filteredData = filteredData.filter(bike => bike.type === 'Road' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+            filteredData = filteredData.filter(bike => bike.type === 'Road');
         }
     
         if (hybrid) {
-            filteredData = filteredData.filter(bike => bike.type == 'Hybrid');
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are of type hybrid
+                filteredData = filteredData.filter(bike => bike.type === 'Hybrid' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+            filteredData = filteredData.filter(bike => bike.type === 'Hybrid');
         }
     
         if (commuter) {
-            filteredData = filteredData.filter(bike => bike.type == 'Commuter');
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are of type commuter
+                filteredData = filteredData.filter(bike => bike.type === 'Commuter' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+            filteredData = filteredData.filter(bike => bike.type === 'Commuter');
         }
     
         if (foldingbike) {
-            filteredData = filteredData.filter(bike => bike.type == 'Folding Bike' || bike.type == 'Folding' || bike.type == 'Folding bike');
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are of type folding bike
+                filteredData = filteredData.filter(bike => bike.type === 'Folding Bike' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+            filteredData = filteredData.filter(bike => bike.type === 'Folding Bike');
         }
     
         if (aluminum) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are of frame material aluminum
+                filteredData = filteredData.filter(bike=> bike.brand === "Aluminum" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.frame_material === 'Aluminum');
         }
     
         if (carbon) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are of frame material carbon
+                filteredData = filteredData.filter(bike => bike.brand === "Carbon" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.frame_material === 'Carbon');
         }
     
         if (steel) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are of frame material steel
+                filteredData = filteredData.filter(bike => bike.brand === "Steel" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.frame_material === 'Steel');
         }
     
         if (carbonfiber) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are of frame material carbon fiber
+                filteredData = filteredData.filter(bike => bike.brand === "Carbon Fiber" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.frame_material === 'Carbon Fiber');
         }
     
         if (lessTwenty) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and have wheel size less than 20
+                filteredData = filteredData.filter(bike=> bike.wheelSize < 20 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.wheelSize < 20);
         }
     
         if (twenty) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and have wheel size between 20 and 24
+                filteredData = filteredData.filter(bike => bike.wheelSize >= 20 && bike.wheelSize < 24 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.wheelSize >= 20 && bike.wheelSize < 24);
         }
     
         if (twentyfour) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and have wheel size over 24
+                filteredData = filteredData.filter(bike => bike.wheelSize >= 24 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.wheelSize >= 24 && bike.wheelSize < 28);
         }
     
         if (front) {
-            filteredData = filteredData.filter(bike => bike.suspension_type === 'Front Suspension' || bike.suspension_type === 'Front' || bike.suspension_type === 'Front suspension');
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and have front suspension
+                filteredData = filteredData.filter(bike => bike.suspension_type === 'Front Suspension' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+
+            filteredData = filteredData.filter(bike => bike.suspension_type === 'Front Suspension');
         }
     
         if (all) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and have both front and back suspension
+                filteredData = filteredData.filter(bike => bike.suspension_type === 'all' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.suspension_type == 'all');
         }
     
         if (frontAndBack) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and have both front and back suspension
+                filteredData = filteredData.filter(bike => bike.suspension_type === 'Front and Back' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+            
             filteredData = filteredData.filter(bike => bike.suspension_type === 'Front and Back');
         }
     
         if (none) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and have no suspension
+                filteredData = filteredData.filter(bike => bike.suspension_type === 'None' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+
             filteredData = filteredData.filter(bike => bike.suspension_type === 'None');
         }
     
         if (single) {
-            filteredData = filteredData.filter(bike => bike.gear_type == 'Single-speed');
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and have single gear
+                filteredData = filteredData.filter(bike => bike.gear_type === 'Single-speed' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+            filteredData = filteredData.filter(bike => bike.gear_type === 'Single-speed');
         }
     
         if (multi) {
-            filteredData = filteredData.filter(bike => bike.gear_type == 'Multi' || bike.gear_type == 'Multi-speed' || bike.gear_type == 'Multi Speed');
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and have multi gear
+                filteredData = filteredData.filter(bike => bike.gear_type === 'Multi-speed' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
+            filteredData = filteredData.filter(bike => bike.gear_type == 'Multi-speed');
         }
     
         if (price1) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are less than $500
+                filteredData = filteredData.filter(bike => bike.price < 500 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.price < 500);
         }
     
         if (price2) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are between $500 and $10000
+                filteredData = filteredData.filter(bike => bike.price >= 500 && bike.price < 10000 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.price >= 500 && bike.price < 10000);
         }
     
         if (price) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are more than $10000
+                filteredData = filteredData.filter(bike => bike.price >= 10000 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.price >= 10000);
         }
     
         if (available) {
+            if (search.length > 0) {
+                // search for bikes that match the search keyword and are available
+                filteredData = filteredData.filter(bike => bike.available_quantity > 0 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+            }
             filteredData = filteredData.filter(bike => bike.available_quantity > 0);
         }
     
