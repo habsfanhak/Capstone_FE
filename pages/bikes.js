@@ -55,9 +55,6 @@ export default function Bikes() {
             <center><h2 style={{fontFamily: 'rethink'}}>Bikes</h2></center>
             <br/>
 
-            {/* // add search bar
-            // add search button
-            // add search functionality */}
             <Container>
             <Row>
                 <Col>
