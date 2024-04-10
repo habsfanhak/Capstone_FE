@@ -2,6 +2,7 @@ import { Button, Card, ListGroup, Container, Row, Col } from 'react-bootstrap';
 import { getBikes } from "@/lib/userActions";
 import { useState, useEffect } from "react";
 import bike_styles from '../styles/Bikes.module.css'
+import Link from 'next/link';
 
 export default function Bikes() {
     const [bikes, setBikes] = useState([]);
@@ -34,16 +35,12 @@ export default function Bikes() {
                                     </Card.Body>
                                     <ListGroup className="list-group-flush">
                                         <ListGroup.Item>Type: {bike.type}</ListGroup.Item>
-                                        <ListGroup.Item>Frame: {bike.frame_material}</ListGroup.Item>
-                                        
-                                        <ListGroup.Item>Wheel Size: {bike.wheelSize}</ListGroup.Item>
-                                        <ListGroup.Item>Suspension: {bike.suspension_type}</ListGroup.Item>
-                                        <ListGroup.Item>Gear Type: {bike.gear_type}</ListGroup.Item>
 
                                         <ListGroup.Item>Price: ${bike.price}</ListGroup.Item>
                                         <ListGroup.Item>Available: {bike.available_quantity || 'Not Available'}</ListGroup.Item>
                                     </ListGroup>
                                     <Card.Body>
+                                        <Button variant="outline-primary"><Link href={`/bike?model=${bike.model}`}>View</Link></Button> &nbsp; 
                                         <Button variant="primary">Add to Cart</Button>
                                     </Card.Body>
                                 </Card>
