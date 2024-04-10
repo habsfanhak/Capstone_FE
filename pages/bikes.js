@@ -27,6 +27,7 @@ export default function Bikes() {
                             <Col sm={12} md={4} key={bike._id}>
                                 <Card className={bike_styles.custom_card}>
                                     <Card.Body>
+                                        {bike.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} />}
                                         <Card.Title>{bike.brand}</Card.Title>
                                         <Card.Text>
                                             {bike.model}

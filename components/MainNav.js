@@ -34,6 +34,8 @@ export default function MainNav() {
             <Navbar.Collapse className="justify-content-end">
                 {(isAuthenticated() || !isAuthenticated()) && <Link href="/bikes" passHref legacyBehavior><Nav.Link href="/bikes" className={`${navbar_styles.custom_navbar_item} px-4`}>Bikes</Nav.Link></Link>}
                 {isAuthUser() && <Link href="/registeradmin" passHref legacyBehavior><Nav.Link href="/registeradmin" className={`${navbar_styles.custom_navbar_item} px-4`}>Add Admin</Nav.Link></Link>}
+                {isAuthUser() && <Link href="/users" passHref legacyBehavior><Nav.Link href="/users" className={`${navbar_styles.custom_navbar_item} px-4`}>Users</Nav.Link></Link>}
+
                 {isAdmin() && <Link href="/addBike" passHref legacyBehavior><Nav.Link href="/addBike" className={`${navbar_styles.custom_navbar_item} px-4`}>Add Bike</Nav.Link></Link>}
                 {!isAuthenticated() && <Link href="/login" passHref legacyBehavior><Nav.Link href="/login" className={`${navbar_styles.custom_navbar_item} px-4`}>Login</Nav.Link></Link>}
                 {!isAuthenticated() && <Link href="/register" passHref legacyBehavior><Nav.Link href="/register" className={`${navbar_styles.custom_navbar_item} px-4`}>Register</Nav.Link></Link>}
