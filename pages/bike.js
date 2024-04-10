@@ -31,7 +31,7 @@ export default function Bike(){
         <>
             <br/>
             <Container>
-                {bike.image && <Image src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} alt="Placeholder"></Image>}
+                {bike.image && <img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} alt="Placeholder" width={300} height={200}></img>}
                 <Card className={register_styles.custom_card}>
                     <Card.Body>
                         <div>
