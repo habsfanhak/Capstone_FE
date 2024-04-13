@@ -3,6 +3,7 @@ import { getBikes } from "@/lib/userActions";
 import { useState, useEffect } from "react";
 import bike_styles from '../styles/Bikes.module.css'
 import Link from 'next/link';
+import { format } from '@cloudinary/url-gen/actions/delivery';
 
 
 
@@ -20,18 +21,17 @@ export default function Bikes() {
     const [road, setRoad] = useState(false);
     const [hybrid, setHybrid] = useState(false);
     const [commuter, setCommuter] = useState(false);
-    const [foldingbike, setFoldingbike] = useState(false);
+    const [foldingBike, setFoldingBike] = useState(false);
 
     // filter by frame material
     const [aluminum, setAluminum] = useState(false);
     const [carbon, setCarbon] = useState(false);
     const [steel, setSteel] = useState(false);
-    const [carbonfiber, setCarbonfiber] = useState(false);
 
     // filter by wheel size
     const [lessTwenty, setLessTwenty] = useState(false); // [0, 20]
     const [twenty, setTwenty] = useState(false);
-    const [twentyfour, setTwentyfour] = useState(false);
+    const [twentyFour, setTwentyFour] = useState(false);
     //const [twentyeight, setTwentyeight] = useState(false);
 
     // filter by suspension type
@@ -63,7 +63,7 @@ export default function Bikes() {
 
         handleFilter();
         
-    }, [mountain, road, hybrid, commuter, foldingbike, aluminum, carbon, steel, carbonfiber, lessTwenty, twenty, twentyfour, front, all, frontAndBack, none, single, multi, price1, price2, price, available]);
+    }, [mountain, road, hybrid, commuter, foldingBike, aluminum, carbon, steel, lessTwenty, twenty, twentyFour, front, all, frontAndBack, none, single, multi, price1, price2, price]);
 
     async function handleSearch() {
         
@@ -84,20 +84,21 @@ export default function Bikes() {
         }
     }
 
-    const handleFilter = async () => {
-        let data = await getBikes();
+    async function handleFilter() {
+
+        const data = await getBikes();
         let filteredData = data;
     
-        if (mountain) {
+        if (mountain == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are of type mountain
                 filteredData = filteredData.filter(bike => bike.type === 'Mountain' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
             }
 
-            filteredData = filteredData.filter(bike => bike.type === 'Mountain');
+            filteredData = filteredData.filter(bike => bike.type === 'Mountain' || bike.type === 'Mountain Bike');
         }
         
-        if (road) {
+        if (road == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are of type road
                 filteredData = filteredData.filter(bike => bike.type === 'Road' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -105,7 +106,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.type === 'Road');
         }
     
-        if (hybrid) {
+        if (hybrid == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are of type hybrid
                 filteredData = filteredData.filter(bike => bike.type === 'Hybrid' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -113,7 +114,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.type === 'Hybrid');
         }
     
-        if (commuter) {
+        if (commuter == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are of type commuter
                 filteredData = filteredData.filter(bike => bike.type === 'Commuter' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -121,47 +122,39 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.type === 'Commuter');
         }
     
-        if (foldingbike) {
+        if (foldingBike == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are of type folding bike
                 filteredData = filteredData.filter(bike => bike.type === 'Folding Bike' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
             }
-            filteredData = filteredData.filter(bike => bike.type === 'Folding Bike');
+            filteredData = filteredData.filter(bike => bike.type === 'Folding Bike' || bike.type === 'Folding bike');
         }
     
-        if (aluminum) {
+        if (aluminum == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are of frame material aluminum
-                filteredData = filteredData.filter(bike=> bike.brand === "Aluminum" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+                filteredData = filteredData.filter(bike=> bike.frame_material === "Aluminum" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
             }
             filteredData = filteredData.filter(bike => bike.frame_material === 'Aluminum');
         }
     
-        if (carbon) {
+        if (carbon == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are of frame material carbon
-                filteredData = filteredData.filter(bike => bike.brand === "Carbon" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+                filteredData = filteredData.filter(bike => (bike.frame_material === "Carbon" || bike.frame_material == "Carbon Fiber") && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
             }
-            filteredData = filteredData.filter(bike => bike.frame_material === 'Carbon');
+            filteredData = filteredData.filter(bike => bike.frame_material === 'Carbon' || bike.frame_material === 'Carbon Fiber');
         }
     
-        if (steel) {
+        if (steel == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are of frame material steel
-                filteredData = filteredData.filter(bike => bike.brand === "Steel" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
+                filteredData = filteredData.filter(bike => bike.frame_material === "Steel" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
             }
             filteredData = filteredData.filter(bike => bike.frame_material === 'Steel');
         }
     
-        if (carbonfiber) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are of frame material carbon fiber
-                filteredData = filteredData.filter(bike => bike.brand === "Carbon Fiber" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.frame_material === 'Carbon Fiber');
-        }
-    
-        if (lessTwenty) {
+        if (lessTwenty == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and have wheel size less than 20
                 filteredData = filteredData.filter(bike=> bike.wheelSize < 20 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -169,7 +162,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.wheelSize < 20);
         }
     
-        if (twenty) {
+        if (twenty == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and have wheel size between 20 and 24
                 filteredData = filteredData.filter(bike => bike.wheelSize >= 20 && bike.wheelSize < 24 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -177,7 +170,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.wheelSize >= 20 && bike.wheelSize < 24);
         }
     
-        if (twentyfour) {
+        if (twentyFour == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and have wheel size over 24
                 filteredData = filteredData.filter(bike => bike.wheelSize >= 24 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -185,7 +178,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.wheelSize >= 24 && bike.wheelSize < 28);
         }
     
-        if (front) {
+        if (front == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and have front suspension
                 filteredData = filteredData.filter(bike => bike.suspension_type === 'Front Suspension' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -194,7 +187,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.suspension_type === 'Front Suspension');
         }
     
-        if (all) {
+        if (all == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and have both front and back suspension
                 filteredData = filteredData.filter(bike => bike.suspension_type === 'all' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -202,7 +195,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.suspension_type == 'all');
         }
     
-        if (frontAndBack) {
+        if (frontAndBack == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and have both front and back suspension
                 filteredData = filteredData.filter(bike => bike.suspension_type === 'Front and Back' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -211,7 +204,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.suspension_type === 'Front and Back');
         }
     
-        if (none) {
+        if (none == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and have no suspension
                 filteredData = filteredData.filter(bike => bike.suspension_type === 'None' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -220,7 +213,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.suspension_type === 'None');
         }
     
-        if (single) {
+        if (single == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and have single gear
                 filteredData = filteredData.filter(bike => bike.gear_type === 'Single-speed' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -228,7 +221,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.gear_type === 'Single-speed');
         }
     
-        if (multi) {
+        if (multi == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and have multi gear
                 filteredData = filteredData.filter(bike => bike.gear_type === 'Multi-speed' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -236,7 +229,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.gear_type == 'Multi-speed');
         }
     
-        if (price1) {
+        if (price1 == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are less than $500
                 filteredData = filteredData.filter(bike => bike.price < 500 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -244,7 +237,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.price < 500);
         }
     
-        if (price2) {
+        if (price2 == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are between $500 and $10000
                 filteredData = filteredData.filter(bike => bike.price >= 500 && bike.price < 10000 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -252,7 +245,7 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.price >= 500 && bike.price < 10000);
         }
     
-        if (price) {
+        if (price == true) {
             if (search.length > 0) {
                 // search for bikes that match the search keyword and are more than $10000
                 filteredData = filteredData.filter(bike => bike.price >= 10000 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
@@ -260,37 +253,33 @@ export default function Bikes() {
             filteredData = filteredData.filter(bike => bike.price >= 10000);
         }
     
-        if (available) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are available
-                filteredData = filteredData.filter(bike => bike.available_quantity > 0 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.available_quantity > 0);
-        }
-    
+        
         setBikes(filteredData);
     }
 
     
     // clear search function
+    
+
+    
+    
     const clearSearch = async (e) => {
         setSearch('');
-        setMessage('');
+        setMessage(''); 
         
         // clear all filters
         setMountain(false);
         setRoad(false);
         setHybrid(false);
         setCommuter(false);
-        setFoldingbike(false);
+        setFoldingBike(false);
 
         setAluminum(false);
         setCarbon(false);
         setSteel(false);
-        setCarbonfiber(false);
 
         setTwenty(false);
-        setTwentyfour(false);
+        setTwentyFour(false);
         setLessTwenty(false);
 
         setFront(false);
@@ -303,13 +292,41 @@ export default function Bikes() {
         setPrice2(false);
         setPrice(false);
 
-        setAvailable(false);
+        //setAvailable(false);
 
         
 
         const data = await getBikes();
         setBikes(data);
 
+    }
+
+    const clearStates = () => {
+        setMountain(false);
+        setRoad(false);
+        setHybrid(false);
+        setCommuter(false);
+        setFoldingBike(false);
+
+        setAluminum(false);
+        setCarbon(false);
+        setSteel(false);
+
+        setTwenty(false);
+        setTwentyFour(false);
+        setLessTwenty(false);
+
+        setFront(false);
+        setAll(false);
+
+        setSingle(false);
+        setMulti(false);
+
+        setPrice1(false);
+        setPrice2(false);
+        setPrice(false);
+
+        //setAvailable(false);
     }
 
 
@@ -347,737 +364,116 @@ export default function Bikes() {
                                    <Row>
                                     <Col>
                                         <h5>Bike Type</h5>
-                                        <Form.Check type="radio" label="Mountain" name="type" checked={mountain} onChange={() => {setMountain(true)
-                                            // set other types to false
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            // set all states to false
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-                            
-
-                                        }
-                                        } />
+                                        <Form.Check type="radio" label="Mountain" name="type" checked={mountain} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setMountain(!mountain)
+                                        }} />
 
                                         
-                                        <Form.Check type="radio" label="Road" name="type" checked={road} onChange={() => {setRoad(true)
-                                            // set other types to false
-                                            setMountain(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-
-                                            // set all states to false
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-
-                                            
-        
+                                        <Form.Check type="radio" label="Road" name="type" checked={road} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setRoad(!road)
                                         }} />
-                                        <Form.Check type="radio" label="Hybrid" name="type" checked={hybrid} onChange={() => {setHybrid(true)
-                                            // set other types to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            // set all states to false
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-                                            
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-
+                                        <Form.Check type="radio" label="Hybrid" name="type" checked={hybrid} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setHybrid(!hybrid)
                                         }} />
-                                        <Form.Check type="radio" label="Commuter" name="type" checked={commuter} onChange={() => {setCommuter(true)
-                                            // set other types to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setFoldingbike(false);
-
-                                            
-                                            // set all states to false
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
+                                        <Form.Check type="radio" label="Commuter" name="type" checked={commuter} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setCommuter(!commuter)
                                         }} />
-                                        <Form.Check type="radio" label="Folding Bike" name="type" checked={foldingbike} onChange={() => {setFoldingbike(true)
-                                            // set other types to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                        
-                                            // set all states to false
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-
-                                        
+                                        <Form.Check type="radio" label="Folding Bike" name="type" checked={foldingBike} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setFoldingBike(!foldingBike)
                                         }} />
                                     </Col>
                                     <Col>
                                         <h5>Frame Material</h5>
-                                        <Form.Check type="radio" label="Aluminum" name="frame" checked={aluminum} onChange={() => {setAluminum(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
+                                        <Form.Check type="radio" label="Aluminum" name="frame" checked={aluminum} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setAluminum(!aluminum)
                                         }} />
-                                        <Form.Check type="radio" label="Carbon" name="frame" checked={carbon} onChange={() => {setCarbon(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-
+                                        <Form.Check type="radio" label="Carbon" name="frame" checked={carbon} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setCarbon(!carbon)
                                         }} />
-                                        <Form.Check type="radio" label="Steel" name="frame" checked={steel} onChange={() => {setSteel(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-                                            setNone(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-                                        
-                                        }} />
-                                        <Form.Check type="radio" label="Carbon Fiber" name="frame" checked={carbonfiber} onChange={() => {setCarbonfiber(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-                                            setNone(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-                                        
-                                        
+                                        <Form.Check type="radio" label="Steel" name="frame" checked={steel} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setSteel(!steel)
                                         }} />
                                     </Col>
                                     <Col>
                                         <h5>Wheel Size</h5>
-                                        <Form.Check type="radio" label="Less than 20" name="wheel" checked={lessTwenty} onChange={() => {setLessTwenty(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-                                            //setLessTwenty(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-                                            setNone(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            // set other wheel sizes to false
-                                            setTwentyfour(false);
-                                            setTwenty(false);
-
-                                            setAvailable(false);
-
-
+                                        <Form.Check type="radio" label="Less than 20" name="wheel" checked={lessTwenty} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setLessTwenty(!lessTwenty)
                                         }} />
-                                        <Form.Check type="radio" label="20-24" name="wheel" checked={twenty} onChange={() => {setTwenty(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            
-
-                                            setAvailable(false);
-
-                                        
+                                        <Form.Check type="radio" label="20-24" name="wheel" checked={twenty} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setTwenty(!twenty)
                                         }} />
-                                        <Form.Check type="radio" label="Over 24" name="wheel" checked={twentyfour} onChange={() => {setTwentyfour(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-                                        
-                                        }} />
+                                        <Form.Check type="radio" label="Over 24" name="wheel" checked={twentyFour} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setTwentyFour(!twentyFour)
+                                            }} />
                                     </Col>
                                     <Col>
                                         <h5>Suspension Type</h5>
-                                        <Form.Check type="radio" label="Front" name="suspension" checked={front} onChange={() => {setFront(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-
-    
-
-
-                                        
-                                        }} />
-                                        <Form.Check type="radio" label="All" name="suspension" checked={all} onChange={() => {setAll(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-
-
-                                        
-                                        
-                                        
-                                        }} />
-                                        <Form.Check type="radio" label="Front and Back" name="suspension" checked={frontAndBack} onChange={() => {setFrontAndBack(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-                                        
-                                        }} />
-                                        <Form.Check type="radio" label="None" name="suspension" checked={none} onChange={() => {setNone(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-                                        }} />
+                                        <Form.Check type="radio" label="Front" name="suspension" checked={front} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setFront(!front)}} />
+                                        <Form.Check type="radio" label="All" name="suspension" checked={all} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setAll(!all)}} />
+                                        <Form.Check type="radio" label="Front and Back" name="suspension" checked={frontAndBack} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setFrontAndBack(!frontAndBack)}} />
+                                        <Form.Check type="radio" label="None" name="suspension" checked={none} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setNone(!none)}} />
                                     </Col>
                                     <Col>
                                         <h5>Gear Type</h5>
-                                        <Form.Check type="radio" label="Single" name="gear" checked={single} onChange={() => {setSingle(true)
-                                           // set all the states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-
-
-                                        
-                                        }} />
-                                        <Form.Check type="radio" label="Multi" name="gear" checked={multi} onChange={() => {setMulti(true)
-                                            // set all the states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-                                        }} />
+                                        <Form.Check type="radio" label="Single" name="gear" checked={single} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setSingle(!single)}} />
+                                        <Form.Check type="radio" label="Multi" name="gear" checked={multi} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setMulti(!multi)}} />
                                     </Col>
                                     <Col>
                                         <h5>Price</h5>
-                                        <Form.Check type="radio" label="Less than $500" name="price" checked={price1} onChange={() => {setPrice1(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice2(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-
-                                        }} />
-                                        <Form.Check type="radio" label="$500 - $10000" name="price" checked={price2} onChange={() => {setPrice2(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice(false);
-
-                                            setAvailable(false);
-                                        }} />
-                                        <Form.Check type="radio" label="More than $10000" name="price" checked={price} onChange={() => {setPrice(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-
-                                            setAvailable(false);
-                                        }} />
+                                        <Form.Check type="radio" label="Less than $500" name="price" checked={price1} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setPrice1(!price1)}} />
+                                        <Form.Check type="radio" label="$500 - $10000" name="price" checked={price2} onChange={(e) => {
+                                            e.preventDefault();
+                                            clearStates();
+                                            setPrice2(!price2)}} />
+                                        <Form.Check type="radio" label="More than $10000" name="price" checked={price} onChange={() => {setPrice(!price)}} />
                                     </Col>
-                                    <Col>
+                                    {/* <Col>
                                         <h5>Available</h5>
-                                        <Form.Check type="radio" label="Available" name="available" checked={available} onChange={() => {setAvailable(true)
-                                            // set all states to false
-                                            setMountain(false);
-                                            setRoad(false);
-                                            setHybrid(false);
-                                            setCommuter(false);
-                                            setFoldingbike(false);
-
-                                            setAluminum(false);
-                                            setCarbon(false);
-                                            setSteel(false);
-                                            setCarbonfiber(false);
-
-                                            setLessTwenty(false);
-                                            setTwenty(false);
-                                            setTwentyfour(false);
-
-                                            setFront(false);
-                                            setAll(false);
-                                            setFrontAndBack(false);
-                                            setNone(false);
-
-                                            setSingle(false);
-                                            setMulti(false);
-
-                                            setPrice1(false);
-                                            setPrice2(false);
-                                            setPrice(false);
-                                        }} />
-                                    </Col>
+                                        <Form.Check type="radio" label="Available" name="available" checked={available} onChange={() => {}} />
+                                    </Col> */}
                                 </Row>
                             
                                 </div>   
