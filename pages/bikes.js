@@ -88,181 +88,92 @@ export default function Bikes() {
 
         const data = await getBikes();
         let filteredData = data;
-    
-        if (mountain == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are of type mountain
-                filteredData = filteredData.filter(bike => bike.type === 'Mountain' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
 
-            filteredData = filteredData.filter(bike => bike.type === 'Mountain' || bike.type === 'Mountain Bike');
+        // Apply search filter
+        if (search !== '') {
+            filteredData = filteredData.filter(bike => bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase()));
+        }
+
+
+        // Filter by bike type
+        const selectedTypes = [];
+        if (mountain) selectedTypes.push('Mountain');
+        if (road) selectedTypes.push('Road');
+        if (hybrid) selectedTypes.push('Hybrid');
+        if (commuter) selectedTypes.push('Commuter');
+        if (foldingBike) selectedTypes.push('Folding Bike');
+
+        if (selectedTypes.length > 0) {
+            filteredData = filteredData.filter(bike => selectedTypes.includes(bike.type));
+        }
+
+        // Filter by frame material
+        const selectedMaterials = [];
+        if (aluminum) selectedMaterials.push('Aluminum');
+        if (carbon) selectedMaterials.push('Carbon');
+        if (steel) selectedMaterials.push('Steel');
+
+        if (selectedMaterials.length > 0) {
+            filteredData = filteredData.filter(bike => selectedMaterials.includes(bike.frame_material));
+        }
+
+
+        // Apply filter options for wheel size
+        const selectedSizes = [];
+        if (lessTwenty) selectedSizes.push('Less than 20');
+        if (twenty) selectedSizes.push('20-24');
+        if (twentyFour) selectedSizes.push('Over 24');
+
+        if (selectedSizes.length > 0) {
+            filteredData = filteredData.filter(bike => {
+                if (lessTwenty && bike.wheelSize < 20) return true;
+                if (twenty && bike.wheelSize >= 20 && bike.wheelSize <= 24) return true;
+                if (twentyFour && bike.wheelSize > 24) return true;
+                return false;
+            });
         }
         
-        if (road == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are of type road
-                filteredData = filteredData.filter(bike => bike.type === 'Road' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.type === 'Road');
-        }
-    
-        if (hybrid == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are of type hybrid
-                filteredData = filteredData.filter(bike => bike.type === 'Hybrid' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.type === 'Hybrid');
-        }
-    
-        if (commuter == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are of type commuter
-                filteredData = filteredData.filter(bike => bike.type === 'Commuter' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.type === 'Commuter');
-        }
-    
-        if (foldingBike == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are of type folding bike
-                filteredData = filteredData.filter(bike => bike.type === 'Folding Bike' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.type === 'Folding Bike' || bike.type === 'Folding bike');
-        }
-    
-        if (aluminum == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are of frame material aluminum
-                filteredData = filteredData.filter(bike=> bike.frame_material === "Aluminum" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.frame_material === 'Aluminum');
-        }
-    
-        if (carbon == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are of frame material carbon
-                filteredData = filteredData.filter(bike => (bike.frame_material === "Carbon" || bike.frame_material == "Carbon Fiber") && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.frame_material === 'Carbon' || bike.frame_material === 'Carbon Fiber');
-        }
-    
-        if (steel == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are of frame material steel
-                filteredData = filteredData.filter(bike => bike.frame_material === "Steel" && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.frame_material === 'Steel');
-        }
-    
-        if (lessTwenty == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and have wheel size less than 20
-                filteredData = filteredData.filter(bike=> bike.wheelSize < 20 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.wheelSize < 20);
-        }
-    
-        if (twenty == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and have wheel size between 20 and 24
-                filteredData = filteredData.filter(bike => bike.wheelSize >= 20 && bike.wheelSize < 24 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.wheelSize >= 20 && bike.wheelSize < 24);
-        }
-    
-        if (twentyFour == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and have wheel size over 24
-                filteredData = filteredData.filter(bike => bike.wheelSize >= 24 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.wheelSize >= 24 && bike.wheelSize < 28);
-        }
-    
-        if (front == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and have front suspension
-                filteredData = filteredData.filter(bike => bike.suspension_type === 'Front Suspension' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
+        // Apply filter options for suspension type
+        const selectedSuspensions = [];
+        if (front) selectedSuspensions.push('Front');
+        if (all) selectedSuspensions.push('All');
+        if (frontAndBack) selectedSuspensions.push('Front and Back');
+        if (none) selectedSuspensions.push('None');
 
-            filteredData = filteredData.filter(bike => bike.suspension_type === 'Front Suspension');
+        if (selectedSuspensions.length > 0) {
+            filteredData = filteredData.filter(bike => selectedSuspensions.includes(bike.suspension));
         }
-    
-        if (all == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and have both front and back suspension
-                filteredData = filteredData.filter(bike => bike.suspension_type === 'all' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.suspension_type == 'all');
-        }
-    
-        if (frontAndBack == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and have both front and back suspension
-                filteredData = filteredData.filter(bike => bike.suspension_type === 'Front and Back' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            
-            filteredData = filteredData.filter(bike => bike.suspension_type === 'Front and Back');
-        }
-    
-        if (none == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and have no suspension
-                filteredData = filteredData.filter(bike => bike.suspension_type === 'None' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
 
-            filteredData = filteredData.filter(bike => bike.suspension_type === 'None');
+        // Apply filter options for gear type
+        const selectedGears = [];
+        if (single) selectedGears.push('Single');
+        if (multi) selectedGears.push('Multi');
+
+        if (selectedGears.length > 0) {
+            filteredData = filteredData.filter(bike => selectedGears.includes(bike.gear));
         }
-    
-        if (single == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and have single gear
-                filteredData = filteredData.filter(bike => bike.gear_type === 'Single-speed' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.gear_type === 'Single-speed');
+
+        // Apply filter options for price
+        const selectedPrices = [];
+        if (price1) selectedPrices.push('Less than $500');
+        if (price2) selectedPrices.push('$500 - $10000');
+        if (price) selectedPrices.push('More than $10000');
+
+        if (selectedPrices.length > 0) {
+            filteredData = filteredData.filter(bike => {
+                if (price1 && bike.price < 500) return true;
+                if (price2 && bike.price >= 500 && bike.price <= 10000) return true;
+                if (price && bike.price > 10000) return true;
+                return false;
+            });
         }
-    
-        if (multi == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and have multi gear
-                filteredData = filteredData.filter(bike => bike.gear_type === 'Multi-speed' && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.gear_type == 'Multi-speed');
-        }
-    
-        if (price1 == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are less than $500
-                filteredData = filteredData.filter(bike => bike.price < 500 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.price < 500);
-        }
-    
-        if (price2 == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are between $500 and $10000
-                filteredData = filteredData.filter(bike => bike.price >= 500 && bike.price < 10000 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.price >= 500 && bike.price < 10000);
-        }
-    
-        if (price == true) {
-            if (search.length > 0) {
-                // search for bikes that match the search keyword and are more than $10000
-                filteredData = filteredData.filter(bike => bike.price >= 10000 && (bike.brand.toLowerCase().includes(search.toLowerCase()) || bike.model.toLowerCase().includes(search.toLowerCase())));
-            }
-            filteredData = filteredData.filter(bike => bike.price >= 10000);
-        }
-    
-        
+
+  
         setBikes(filteredData);
     }
 
     
     // clear search function
-    
-
-    
-    
     const clearSearch = async (e) => {
         setSearch('');
         setMessage(''); 
@@ -293,40 +204,9 @@ export default function Bikes() {
         setPrice(false);
 
         //setAvailable(false);
-
-        
-
         const data = await getBikes();
         setBikes(data);
 
-    }
-
-    const clearStates = () => {
-        setMountain(false);
-        setRoad(false);
-        setHybrid(false);
-        setCommuter(false);
-        setFoldingBike(false);
-
-        setAluminum(false);
-        setCarbon(false);
-        setSteel(false);
-
-        setTwenty(false);
-        setTwentyFour(false);
-        setLessTwenty(false);
-
-        setFront(false);
-        setAll(false);
-
-        setSingle(false);
-        setMulti(false);
-
-        setPrice1(false);
-        setPrice2(false);
-        setPrice(false);
-
-        //setAvailable(false);
     }
 
 
@@ -364,111 +244,111 @@ export default function Bikes() {
                                    <Row>
                                     <Col>
                                         <h5>Bike Type</h5>
-                                        <Form.Check type="radio" label="Mountain" name="type" checked={mountain} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Mountain" name="bikeType" checked={mountain} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setMountain(!mountain)
                                         }} />
 
                                         
-                                        <Form.Check type="radio" label="Road" name="type" checked={road} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Road" name="bikeType" checked={road} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setRoad(!road)
                                         }} />
-                                        <Form.Check type="radio" label="Hybrid" name="type" checked={hybrid} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Hybrid" name="bikeType" checked={hybrid} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setHybrid(!hybrid)
                                         }} />
-                                        <Form.Check type="radio" label="Commuter" name="type" checked={commuter} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Commuter" name="bikeType" checked={commuter} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setCommuter(!commuter)
                                         }} />
-                                        <Form.Check type="radio" label="Folding Bike" name="type" checked={foldingBike} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Folding Bike" name="bikeType" checked={foldingBike} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setFoldingBike(!foldingBike)
                                         }} />
                                     </Col>
                                     <Col>
                                         <h5>Frame Material</h5>
-                                        <Form.Check type="radio" label="Aluminum" name="frame" checked={aluminum} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Aluminum" name="material" checked={aluminum} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setAluminum(!aluminum)
                                         }} />
-                                        <Form.Check type="radio" label="Carbon" name="frame" checked={carbon} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Carbon" name="material" checked={carbon} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setCarbon(!carbon)
                                         }} />
-                                        <Form.Check type="radio" label="Steel" name="frame" checked={steel} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Steel" name="material" checked={steel} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setSteel(!steel)
                                         }} />
                                     </Col>
                                     <Col>
                                         <h5>Wheel Size</h5>
-                                        <Form.Check type="radio" label="Less than 20" name="wheel" checked={lessTwenty} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Less than 20" name="size" checked={lessTwenty} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setLessTwenty(!lessTwenty)
                                         }} />
-                                        <Form.Check type="radio" label="20-24" name="wheel" checked={twenty} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="20-24" name="size" checked={twenty} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setTwenty(!twenty)
                                         }} />
-                                        <Form.Check type="radio" label="Over 24" name="wheel" checked={twentyFour} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Over 24" name="size" checked={twentyFour} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setTwentyFour(!twentyFour)
                                             }} />
                                     </Col>
                                     <Col>
                                         <h5>Suspension Type</h5>
-                                        <Form.Check type="radio" label="Front" name="suspension" checked={front} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Front" name="suspension" checked={front} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setFront(!front)}} />
-                                        <Form.Check type="radio" label="All" name="suspension" checked={all} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="All" name="suspension" checked={all} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setAll(!all)}} />
-                                        <Form.Check type="radio" label="Front and Back" name="suspension" checked={frontAndBack} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Front and Back" name="suspension" checked={frontAndBack} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setFrontAndBack(!frontAndBack)}} />
-                                        <Form.Check type="radio" label="None" name="suspension" checked={none} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="None" name="suspension" checked={none} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setNone(!none)}} />
                                     </Col>
                                     <Col>
                                         <h5>Gear Type</h5>
-                                        <Form.Check type="radio" label="Single" name="gear" checked={single} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Single" name="gear" checked={single} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setSingle(!single)}} />
-                                        <Form.Check type="radio" label="Multi" name="gear" checked={multi} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Multi" name="gear" checked={multi} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setMulti(!multi)}} />
                                     </Col>
                                     <Col>
                                         <h5>Price</h5>
-                                        <Form.Check type="radio" label="Less than $500" name="price" checked={price1} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="Less than $500" name="price" checked={price1} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setPrice1(!price1)}} />
-                                        <Form.Check type="radio" label="$500 - $10000" name="price" checked={price2} onChange={(e) => {
+                                        <Form.Check type="checkbox" label="$500 - $10000" name="price" checked={price2} onChange={(e) => {
                                             e.preventDefault();
-                                            clearStates();
+                                            //clearStates();
                                             setPrice2(!price2)}} />
-                                        <Form.Check type="radio" label="More than $10000" name="price" checked={price} onChange={() => {setPrice(!price)}} />
+                                        <Form.Check type="checkbox" label="More than $10000" name="price" checked={price} onChange={() => {setPrice(!price)}} />
                                     </Col>
                                     {/* <Col>
                                         <h5>Available</h5>
