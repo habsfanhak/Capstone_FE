@@ -37,6 +37,11 @@ export default function MainNav() {
                 {isAuthUser() && <Link href="/users" passHref legacyBehavior><Nav.Link href="/users" className={`${navbar_styles.custom_navbar_item} px-4`}>Users</Nav.Link></Link>}
 
                 {isAdmin() && <Link href="/addBike" passHref legacyBehavior><Nav.Link href="/addBike" className={`${navbar_styles.custom_navbar_item} px-4`}>Add Bike</Nav.Link></Link>}
+                
+                {/* navigate to dashboard to user who is admin */}
+                {isAdmin() && <Link href="/dashboard" passHref legacyBehavior><Nav.Link href="/dashboard" className={`${navbar_styles.custom_navbar_item} px-4`}>Dashboard</Nav.Link></Link>}
+
+
                 {!isAuthenticated() && <Link href="/login" passHref legacyBehavior><Nav.Link href="/login" className={`${navbar_styles.custom_navbar_item} px-4`}>Login</Nav.Link></Link>}
                 {!isAuthenticated() && <Link href="/register" passHref legacyBehavior><Nav.Link href="/register" className={`${navbar_styles.custom_navbar_item} px-4`}>Register</Nav.Link></Link>}
                 {isAuthenticated() && <Link href="/account" passHref legacyBehavior><Nav.Link href="/account" className={`${navbar_styles.custom_navbar_item} px-4`}>Account</Nav.Link></Link>}
