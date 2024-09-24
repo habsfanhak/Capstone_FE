@@ -1,5 +1,6 @@
 import { Button, Card, ListGroup, Container, Row, Col, Form, Collapse} from 'react-bootstrap';
-import { getBikes } from "@/lib/userActions";
+import { isAuthenticated, addFavourite, readToken } from '@/lib/userActions';
+import { getBikes, getFavourites, removeFavourite } from "@/lib/userActions";
 import { useState, useEffect } from "react";
 import bike_styles from '../styles/Bikes.module.css'
 import Link from 'next/link';
@@ -10,11 +11,15 @@ import { format } from '@cloudinary/url-gen/actions/delivery';
 
 export default function Bikes() {
     const [bikes, setBikes] = useState([]);
+    const [favourites, setFavourites] = useState([]);
     const [search, setSearch] = useState('');
     const [message, setMessage] = useState('');
 
     // filtering
     const [open, setOpen] = useState(false);
+
+    // wishlisted
+    const [wishlisted, setWishlisted] = useState(false)
 
     // filter by bike type
     const [mountain, setMountain] = useState(false);
@@ -54,8 +59,14 @@ export default function Bikes() {
 
     useEffect(() => {
         async function fetchData() {
+            const token = readToken()
+            const email = token.decoded.email
+            
             const data = await getBikes();
+            const favourites = await getFavourites(email);
+
             setBikes(data);
+            setFavourites(favourites)
         }
         fetchData();
 
@@ -63,7 +74,7 @@ export default function Bikes() {
 
         handleFilter();
         
-    }, [mountain, road, hybrid, commuter, foldingBike, aluminum, carbon, steel, lessTwenty, twenty, twentyFour, front, all, frontAndBack, none, single, multi, price1, price2, price]);
+    }, [mountain, road, hybrid, commuter, foldingBike, aluminum, carbon, steel, lessTwenty, twenty, twentyFour, front, all, frontAndBack, none, single, multi, price1, price2, price, wishlisted]);
 
     async function handleSearch() {
         
@@ -81,6 +92,23 @@ export default function Bikes() {
                 setMessage('');
             }
 
+        }
+    }
+
+    async function handleStarClick(bike, add) {
+        if (isAuthenticated()) {
+            const token = readToken()
+            const email = token.decoded.email
+
+            if (add)
+            {
+                await addFavourite(email, bike)
+            }
+            else
+            {
+                await removeFavourite(email, bike) 
+            }
+            setFavourites(await getFavourites(email))
         }
     }
 
@@ -159,6 +187,11 @@ export default function Bikes() {
         if (price2) selectedPrices.push('$500 - $10000');
         if (price) selectedPrices.push('More than $10000');
 
+        // Wishlisted
+        if (wishlisted) {
+            filteredData = filteredData.filter(bike => checkFavourite(bike._id));
+        }
+
         if (selectedPrices.length > 0) {
             filteredData = filteredData.filter(bike => {
                 if (price1 && bike.price < 500) return true;
@@ -203,12 +236,20 @@ export default function Bikes() {
         setPrice2(false);
         setPrice(false);
 
+        setWishlisted(false)
+
         //setAvailable(false);
         const data = await getBikes();
         setBikes(data);
 
     }
 
+    function checkFavourite(id) {
+        return favourites.includes(id); // Assuming favourites is an array of bike IDs          
+    }
+
+    if (!bikes) return null
+    if (!favourites) return null
 
     return (
         <>
@@ -234,6 +275,12 @@ export default function Bikes() {
                         <Button variant="outline-secondary" onClick={() => setOpen(!open)} aria-controls="filter" aria-expanded={open}>
                             Filter
                         </Button>
+                        {!wishlisted && <Button style={{marginLeft: '10px'}} variant="outline-warning" onClick={() => setWishlisted(!wishlisted)} aria-controls="filter" aria-expanded={open}>
+                            Wishlist
+                        </Button>}
+                        {wishlisted && <Button style={{marginLeft: '10px'}} variant="warning" onClick={() => setWishlisted(!wishlisted)} aria-controls="filter" aria-expanded={open}>
+                            Wishlist
+                        </Button>}
                        
                         <Collapse in={open}>
                             
@@ -377,7 +424,12 @@ export default function Bikes() {
                                 <Card className={bike_styles.custom_card}>
                                     <Card.Body>
                                         {bike.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} />}
-                                        <Card.Title>{bike.brand}</Card.Title>
+                                        <Card.Title style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <span>{bike.brand}</span>
+                                            { !checkFavourite(bike._id) && <span className={bike_styles.star} onClick={() => handleStarClick(bike, true)}>☆</span>}
+                                            { checkFavourite(bike._id) && <span className={bike_styles.star} onClick={() => handleStarClick(bike, false)}>★</span>}
+
+                                        </Card.Title>
                                         <Card.Text>
                                             {bike.model}
                                         </Card.Text>

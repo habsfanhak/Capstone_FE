@@ -23,6 +23,16 @@
     font-size: 22px;
 }
 
+.star {
+  font-size: 36px;
+  color: #FFD700;
+}
+
+.star:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .custom_navbar {
 
