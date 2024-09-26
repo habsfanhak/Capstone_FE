@@ -5,11 +5,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import register_styles from '../styles/Register.module.css'
 import Image from "next/image";
-import { getSalePrice } from "@/lib/userActions";
+import { Form } from "react-bootstrap";
+import { getSalePrice, addSale, deleteSale } from "@/lib/userActions";
 
 export default function Bike(){
     const [bike, setBike] = useState();
-    const [salePrice, setSalePrice] = useState("");
+    const [sale, setSale] = useState(null);
+    const [salePrice, setSalePrice] = useState();
     const router = useRouter();
     const model = router.query.model;
 
@@ -18,8 +20,8 @@ export default function Bike(){
             const data = await getBike(model);
             setBike(data);
 
-            const sp = await getSalePrice(model);
-            setSalePrice(sp);
+            const s = await getSalePrice(model);
+            setSale(s);
         }
         fetchData();
     }, [model]);
@@ -28,8 +30,26 @@ export default function Bike(){
         return (<><div><p>Loading....</p><p/></div></>)
     }
 
-    function buyItem(){
-        router.push(`/checkout?model=${model}`);
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        try{
+            await addSale(model, salePrice);
+            setSale(salePrice)
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    async function handleDeleteSale(e) {
+        e.preventDefault();
+
+        try{
+            await deleteSale(model);
+            setSale(null)
+        }catch(err){
+            console.log(err);
+        }
     }
 
     return(
@@ -57,16 +77,27 @@ export default function Bike(){
                             <p><h4>Details:</h4></p>
                             <p><b>Brand:</b> {bike.brand}</p>
                             <p><b>Model:</b> {bike.model}</p>
-                            <p><b>Type:</b> {bike.type}</p>
-                            <p><b>Wheel Size:</b> {bike.wheelSize}</p>
-                            <p><b>Frame Material:</b> {bike.frame_material}</p>
-                            <p><b>Suspension Type:</b> {bike.suspension_type}</p>
-                            {salePrice && <span><del><b>Price:</b> CAD ${bike.price}</del> <p><b>Price:</b> CAD ${salePrice}</p></span>}
-                            {!salePrice && <p><b>Price:</b> CAD ${bike.price}</p> }
+                            <p><b>Price:</b> CAD ${bike.price}</p>
                             <p><b>Quantity In Stock:</b> {bike.available_quantity}</p>
-                        </div>
+                        </div><br/>
+                        <hr/>
                         <br/>
-                        <Button variant="success" size="base" onClick={buyItem}>Buy Item</Button>
+                        {!sale && <>
+                            <h4>Start Sale</h4>
+                            <Form className={register_styles.custom_card} onSubmit={handleSubmit}>
+                                <Form.Group>
+                                    <Form.Label>Sale Price:</Form.Label>
+                                    <Form.Control required type="number" style={{ width: '150px' }} id="price" name="price" placeholder="$" onChange={e => setSalePrice(e.target.value)} /> 
+                                 </Form.Group><br/>
+                                 <Button type="submit" variant="success">Start Sale</Button>
+                            </Form>
+                        </>}
+
+                        {sale && <>
+                            <h4>Current Sale</h4>
+                            <p><b>Price:</b> $ {sale}</p><br/>
+                            <Button variant="danger" onClick={handleDeleteSale}>End Sale</Button>
+                        </>}
                     </Card.Body>
                 </Card>
             </Container>
