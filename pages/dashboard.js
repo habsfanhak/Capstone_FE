@@ -32,10 +32,11 @@ export default function Dashboard() {
             setBlogs(data);
         }
         fetchData();
-
         handleDelete();
     }, []);
     
+    if (!blogs) return null
+    console.log(blogs)
 
     return (
         <>
