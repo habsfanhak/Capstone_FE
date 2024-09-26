@@ -103,7 +103,7 @@ export default function Dashboard() {
             <h5>Active Codes</h5>
             {codes.map((promoCode) =>{
                 return(
-                    <Row>
+                    <Row key={promoCode.code}>
                         <Col>
                             <Card key={promoCode.code} style={{ width: '20rem' }}>
                                 <Card.Body>
