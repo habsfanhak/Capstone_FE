@@ -71,6 +71,8 @@ export default function Dashboard() {
         handleDeleteCode();
     }, [codes]);
     
+    if (!blogs) return null
+    console.log(blogs)
 
     return (
         <>

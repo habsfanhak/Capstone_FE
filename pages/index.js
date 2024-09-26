@@ -1,54 +1,61 @@
-import { Container, Carousel } from "react-bootstrap";
+import { Container, Card, Button } from "react-bootstrap";
+import { getBlogs } from '../lib/userActions'
 
-import { getBlogs } from '@/lib/userActions';
-
-import {useEffect, useState} from'react';
-
+import {useState, useEffect, useRef } from'react';
 import { useRouter } from 'next/router';
 
-
+import Link from 'next/link';
 
 export default function Home() {
 
   const router = useRouter();
 
-
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-        const data = await getBlogs();
-        console.log(data);  // logging fetched data for testing purposes. Replace with your logic to handle the data.  // You can fetch data from your backend API or any other source.
-        setBlogs(data);
+      const data = await getBlogs();
+      console.log(data);
+      setBlogs(data);
+      console.log(blogs);
     }
     fetchData();
-  
   }, []);
+
+  
+
+  
+  
 
   return (
     <>
-    <br/>
+      <br/>
 
       <Container>
         Home Page
-
-        <Carousel>
-          {blogs.map((blog) => (
-            <Carousel.Item key={blog._id}>
-            
-              <Carousel.Caption>
-                <h3>{blog.title}</h3>
-                <p>{blog.author}</p>
-                <p>{blog.content}</p>
-              </Carousel.Caption>
-            </Carousel.Item>
-          ))}
-        </Carousel>
-      
-
-
       </Container>
+      <br/>
+      <Container>
 
+      <div style={{width: "90%", overflow:'scroll', whiteSpace: 'nowrap'}}>
+        {blogs.map((blog) => (
+          <div key={blog.id} style={{width: "50%", display: "inline-block", margin: "10px", scrollSnapAlign: 'start'}}>
+            <Card style={{ width: '30rem' }}>
+              <Card.Body>
+                <Card.Title>{blog.title}</Card.Title>
+                <br/>
+                <Card.Text>
+                  {blog.content.substring(0, 50)}...
+                </Card.Text>
+                <br/>
+                <Link href={`/${blog._id}`} passHref legacyBehavior>
+                  <a target="_blank"><Button>Read More</Button></a>
+                </Link>              </Card.Body>
+            </Card>
+          </div>
+        ))}
+      </div>
+      </Container>
 
       
     </>
