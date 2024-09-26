@@ -48,7 +48,7 @@ export default function Home() {
                   {blog.content.substring(0, 50)}...
                 </Card.Text>
                 <br/>
-                <Link href={`/${blog.title}`} passHref legacyBehavior><Button>Read More</Button></Link>
+                <Link href={`/${blog._id}`} passHref legacyBehavior><Button>Read More</Button></Link>
               </Card.Body>
             </Card>
           </div>

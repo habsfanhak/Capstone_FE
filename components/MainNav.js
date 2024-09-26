@@ -29,7 +29,7 @@ export default function MainNav() {
     return (
         <>
         <Navbar className={navbar_styles.custom_navbar} expand="lg">
-            <Navbar.Brand className={`${navbar_styles.custom_navbar_item} px-4`}>Bike Shop</Navbar.Brand>
+            <Navbar.Brand href="/" className={`${navbar_styles.custom_navbar_item} px-4`}>Bike Shop</Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
                 {(isAuthenticated() || !isAuthenticated()) && <Link href="/bikes" passHref legacyBehavior><Nav.Link href="/bikes" className={`${navbar_styles.custom_navbar_item} px-4`}>Bikes</Nav.Link></Link>}
