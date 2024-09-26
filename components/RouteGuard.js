@@ -4,7 +4,7 @@ import { isAuthenticated } from '../lib/userActions';
 import { isAdmin, isAuthUser } from '../lib/userActions';
 
 const PUBLIC_PATHS = ['/login', '/', '/register', '/bikes', '/bike', '/forgotPass', '/resetSent', '/resetPass'];
-const ADMIN_PATHS = ['/addBike', '/dashboard', '/addBlog']
+const ADMIN_PATHS = ['/addBike', '/dashboard', '/addBlog', '/promos']
 const AUTH_PATHS = ['/registeradmin', '/users']
 
 export default function RouteGuard(props) {
