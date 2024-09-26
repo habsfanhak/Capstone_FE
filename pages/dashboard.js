@@ -70,7 +70,10 @@ export default function Dashboard() {
         handleDeleteBlog();
         handleDeleteCode();
     }, [codes]);
+
     
+    if (!blogs) return null
+    console.log(blogs)
 
     return (
         <>
