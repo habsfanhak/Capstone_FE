@@ -1,10 +1,10 @@
-import { Container, Card } from "react-bootstrap";
+import { Container, Card, Button } from "react-bootstrap";
 import { getBlogs } from '../lib/userActions'
 
 import {useState, useEffect, useRef } from'react';
 import { useRouter } from 'next/router';
 
-
+import Link from 'next/link';
 
 export default function Home() {
 
@@ -48,7 +48,7 @@ export default function Home() {
                   {blog.content.substring(0, 50)}...
                 </Card.Text>
                 <br/>
-                <button onClick={() => router.push(`/${blog.title}`)}>Read More</button>
+                <Link href={`/${blog.title}`} passHref legacyBehavior><Button>Read More</Button></Link>
               </Card.Body>
             </Card>
           </div>

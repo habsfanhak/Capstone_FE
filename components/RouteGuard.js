@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { isAuthenticated } from '../lib/userActions';
 import { isAdmin, isAuthUser } from '../lib/userActions';
 
-const PUBLIC_PATHS = ['/login', '/', '/register', '/bikes', '/bike', '/forgotPass', '/resetSent', '/resetPass'];
+const PUBLIC_PATHS = ['/login', '/', '/register', '/bikes', '/bike', '/forgotPass', '/resetSent', '/resetPass', '/[title]'];
 const ADMIN_PATHS = ['/addBike', '/dashboard', '/addBlog']
 const AUTH_PATHS = ['/registeradmin', '/users']
 
