@@ -37,10 +37,10 @@ export default function Home() {
       <br/>
       <Container>
 
-      <div style={{width: "90%", overflow:'scroll', whiteSpace: 'nowrap'}}>
+      <div style={{width: "90%", whiteSpace: 'nowrap', maxHeight: '400px', overflowY: 'scroll', scrollbarWidth:'none', margin: '20px'}}>
         {blogs.map((blog) => (
           <div key={blog.id} style={{width: "50%", display: "inline-block", margin: "10px", scrollSnapAlign: 'start'}}>
-            <Card style={{ width: '30rem' }}>
+            <Card style={{ width: '33rem' }}>
               <Card.Body>
                 <Card.Title>{blog.title}</Card.Title>
                 <br/>
@@ -48,7 +48,9 @@ export default function Home() {
                   {blog.content.substring(0, 50)}...
                 </Card.Text>
                 <br/>
-                <Link href={`/${blog.title}`} passHref legacyBehavior><Button>Read More</Button></Link>
+                <Link href={`/${blog._id}`} passHref legacyBehavior>
+                  <a target="_blank"><Button>Read More</Button></a>
+                </Link>              
               </Card.Body>
             </Card>
           </div>
