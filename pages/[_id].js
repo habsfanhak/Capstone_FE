@@ -33,6 +33,7 @@ export default function BlogPerPage(){
             <Container>
                 <Card>
                     <Card.Body>
+                        {blog[0].image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${blog[0].image}`} />}
                         <Card.Title>{blog[0].title}</Card.Title>  {/* Access blog.title */}
                         <Card.Text>
                             {blog[0].content}  {/* Access blog.content */}

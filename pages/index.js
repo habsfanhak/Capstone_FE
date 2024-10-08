@@ -37,12 +37,15 @@ export default function Home() {
       <br/>
       <Container>
 
-      <div style={{width: "90%", overflow:'scroll', whiteSpace: 'nowrap'}}>
+      <div style={{width: "90%", whiteSpace: 'nowrap', maxHeight: '600px', overflowY: 'scroll', scrollbarWidth:'none', margin: '20px'}}>
         {blogs.map((blog) => (
           <div key={blog.id} style={{width: "50%", display: "inline-block", margin: "10px", scrollSnapAlign: 'start'}}>
-            <Card style={{ width: '30rem' }}>
+            <Card style={{ width: '28rem' }}>
               <Card.Body>
-                <Card.Title>{blog.title}</Card.Title>
+              {blog.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${blog.image}`} style={{ width: '400px' }} />}
+              <br/>
+              <br/>
+              <Card.Title>{blog.title}</Card.Title>
                 <br/>
                 <Card.Text>
                   {blog.content.substring(0, 50)}...
@@ -50,7 +53,8 @@ export default function Home() {
                 <br/>
                 <Link href={`/${blog._id}`} passHref legacyBehavior>
                   <a target="_blank"><Button>Read More</Button></a>
-                </Link>              </Card.Body>
+                </Link>              
+              </Card.Body>
             </Card>
           </div>
         ))}

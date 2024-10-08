@@ -22,16 +22,17 @@ export default function AddBlog() {
     const [blogAuthor, setBlogAuthor] = useState("");
     const [blogContent, setBlogContent] = useState("");
     const [blogType, setBlogType] = useState("");
+    const [blogImage, setBlogImage] = useState(null);
 
 
-    // const handleFileChange = (event) => {
-    //     setBlogImage(event.target.files[0]);
-    // };
+    const handleFileChange = (event) => {
+        setBlogImage(event.target.files[0]);
+    };
 
     async function handleSubmit(e) {
         e.preventDefault();
         try{
-            await addBlog(blogTitle, blogAuthor, blogContent, blogType);
+            await addBlog(blogTitle, blogAuthor, blogContent, blogType, blogImage);
             setSuccess("Blog added successfully");
 
             // set the states to empty
@@ -39,6 +40,7 @@ export default function AddBlog() {
             setBlogAuthor("");
             setBlogContent("");
             setBlogType("");
+            setBlogImage(null);
         }catch(err){
             setWarning(err.message);
         }
@@ -72,10 +74,10 @@ export default function AddBlog() {
             <Card>
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
-                        {/* <Form.Group controlId="formFile">
+                        <Form.Group controlId="formFile">
                             <Form.Label>Upload Image</Form.Label>
                             <Form.Control type="file" required onChange={handleFileChange}/>
-                        </Form.Group> */}
+                        </Form.Group>
                         <br/>
                         <Form.Group>
                             <Form.Label>Title</Form.Label>
