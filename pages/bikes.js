@@ -6,11 +6,13 @@ import bike_styles from '../styles/Bikes.module.css'
 import Link from 'next/link';
 import { format } from '@cloudinary/url-gen/actions/delivery';
 import { getSalePrice } from '@/lib/userActions';
+import { addToCart } from '@/lib/userActions';
 
 
 
 
 export default function Bikes() {
+    const t = readToken();
     const [bikes, setBikes] = useState([]);
     const [favourites, setFavourites] = useState([]);
     const [search, setSearch] = useState('');
@@ -444,7 +446,7 @@ export default function Bikes() {
                                         </ListGroup>
                                         <Card.Body>
                                             <Button variant="outline-primary"><Link href={`/bike?model=${bike.model}`}>View</Link></Button> &nbsp; 
-                                            <Button variant="primary">Add to Cart</Button>
+                                            <Button variant="primary" onClick={() => addToCart(t.decoded.email, bike.model)}>Add to Cart</Button>
                                         </Card.Body>
                                     </Card>
                                     <br/>
