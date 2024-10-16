@@ -4,7 +4,7 @@ import { isAuthenticated } from '../lib/userActions';
 import { isAdmin, isAuthUser } from '../lib/userActions';
 
 
-const PUBLIC_PATHS = ['/login', '/', '/register', '/bikes', '/bike', '/forgotPass', '/resetSent', '/resetPass', '/[_id]'];
+const PUBLIC_PATHS = ['/login', '/', '/register', '/bikes', '/bike', '/forgotPass', '/resetSent', '/resetPass', '/[_id]', '/cart'];
 const ADMIN_PATHS = ['/addBike', '/dashboard', '/addBlog']
 const AUTH_PATHS = ['/registeradmin', '/users']
 
