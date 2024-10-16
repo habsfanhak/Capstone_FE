@@ -77,7 +77,7 @@ export default function Dashboard() {
     return (
         <>
         <br/>
-        <Container>
+        <Container style={{marginTop: '6vh'}}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h1>Dashboard</h1>
             </div><br/>
