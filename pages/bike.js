@@ -6,8 +6,11 @@ import { useEffect } from "react";
 import register_styles from '../styles/Register.module.css'
 import Image from "next/image";
 import { getSalePrice } from "@/lib/userActions";
+import { addToCart } from "@/lib/userActions";
+import { readToken } from "@/lib/userActions";
 
 export default function Bike(){
+    const token = readToken();
     const [bike, setBike] = useState();
     const [salePrice, setSalePrice] = useState("");
     const router = useRouter();
@@ -66,6 +69,7 @@ export default function Bike(){
                             <p><b>Quantity In Stock:</b> {bike.available_quantity}</p>
                         </div>
                         <br/>
+                        <Button variant="primary" size="base" onClick={() => addToCart(token.decoded.email, bike.model)} className="me-2">Add To Cart</Button>
                         <Button variant="success" size="base" onClick={buyItem}>Buy Item</Button>
                     </Card.Body>
                 </Card>

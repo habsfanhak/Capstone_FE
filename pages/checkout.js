@@ -36,8 +36,8 @@ export default function Checkout(){
 
     async function handleSubmit(e){
         e.preventDefault();
-        //let totalPrice = bike.price + (bike.price * 0.13) + 15;
-        const url = await purchase(bike.brand, bike.model, calculateTotalPrice().toFixed(2));
+        let bikeDetails = `${bike.brand} ${bike.model}`
+        const url = await purchase(bikeDetails, calculateTotalPrice().toFixed(2));
         window.location.href = url;
     }
 
