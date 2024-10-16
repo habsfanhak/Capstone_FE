@@ -11,7 +11,7 @@ export default function PaymentFailed(){
 
     return(
         <>
-            <Container>
+            <Container style={{marginTop: '6vh'}}>
                 <br/><br/><br/><br/>
                 <h1>The Payment Has Failed</h1>
                 <p>Please try again</p>

@@ -12,16 +12,38 @@
     font-weight: normal;
   }
 
+@font-face {
+  font-family: "Bebas";
+  src: local("Bebas"),
+    url("../fonts/BebasNeue-Regular.ttf") format("opentype");
+  font-weight: normal;
+}
+
+
 .custom_navbar {
     font-family: "Rethink";
     background-color: #2F495A;
     color: #00C399;
 }
 
+.rethink {
+  font-family: "Rethink";
+}
+
+.bebas {
+  font-family: 'Bebas';
+  font-size: 10vh;
+}
+
 .custom_navbar_item {
     font-family: "Rethink";
     color: #00C399;
     font-size: 22px;
+}
+
+.navar_height {
+  height: 6vh;
+  min-height: 6vh;
 }
 
 @media (max-width: 768px) {

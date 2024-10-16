@@ -54,7 +54,7 @@ export default function AddBike() {
     return (
         <>
         <br/>
-        <Container>
+        <Container style={{marginTop: '6vh'}}>
             <Card className={addBike_styles.custom_card}>
                 <Card.Body>
                     <div>

@@ -55,7 +55,7 @@ export default function Bike(){
     return(
         <>
             <br/>
-            <Container>
+            <Container style={{marginTop: '6vh'}}>
                 {bike.image && <img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} alt="Placeholder" width={300} height={200}></img>}
                 <Card className={register_styles.custom_card}>
                     <Card.Body>

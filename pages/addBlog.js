@@ -49,7 +49,7 @@ export default function AddBlog() {
     return (
         <>
         <br/>
-        <Container>
+        <Container style={{marginTop: '6vh'}}>
             <Card className={addBlog_styles.custom_card}>
                 <Card.Body>
                     <div>

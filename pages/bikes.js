@@ -259,7 +259,7 @@ export default function Bikes() {
             <center><h2 style={{fontFamily: 'rethink'}}>Bikes</h2></center>
             <br/>
 
-            <Container>
+            <Container style={{marginTop: '6vh'}}>
                 
                 <Row>
                     <Col>

@@ -10,7 +10,7 @@ export default function ResetSent(){
     }
     return(
         <>
-            <Container>
+            <Container style={{marginTop: '6vh'}}>
                 <br/><br/><br/><br/>
                 <h1>Password Reset Link Has Been Sent To Your Email</h1>
                 <p>Please check you email to reset your password. Continue to password reset once you have received your code</p>

@@ -21,7 +21,7 @@ export default function PaymentSuccess(){
 
     return(
         <>  
-            <Container>
+            <Container style={{marginTop: '6vh'}}>
                 <br/><br/><br/><br/>
                 <h1>Your Order Has Been Placed</h1>
                 <p>Thank you for purchasing</p>

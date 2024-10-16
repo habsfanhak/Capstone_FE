@@ -30,7 +30,7 @@ export default function BlogPerPage(){
     return (
         <>
             <br/>
-            <Container>
+            <Container style={{marginTop: '6vh'}}>
                 <Card>
                     <Card.Body>
                         {blog[0].image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${blog[0].image}`} />}

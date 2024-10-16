@@ -5,14 +5,47 @@ import { removeToken, readToken, isAdmin } from "@/lib/userActions"
 import { useRouter } from "next/router"
 import { isAuthenticated, isAuthUser } from "@/lib/userActions"
 import { useEffect } from "react"
+import { useSpring, animated } from 'react-spring';
+import { useState } from "react"
 
 export default function MainNav() {
     const router = useRouter()
+    const isHomePage = router.pathname === '/'; // Adjust the home page path accordingly
+    const [isNavVisible, setIsNavVisible] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     function logout() {
         removeToken()
         router.push("/login")
     }
+
+    useEffect(() => {
+      const handleScroll = () => {
+        const scrollPercentage = (window.scrollY / window.innerHeight) * 100;
+        const scrolled = scrollPercentage > 70; // Check if scrolled more than 50% of the viewport
+        setIsScrolled(scrolled);
+      };
+  
+      window.addEventListener('scroll', handleScroll);
+  
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }, []);
+
+    useEffect(() => {
+        if (isHomePage) {
+          const navDelayTimer = setTimeout(() => {
+            setIsNavVisible(true);
+          }, 2500);
+    
+          return () => {
+            clearTimeout(navDelayTimer);
+          };
+        } else {
+          setIsNavVisible(true); // Skip animation on other pages
+        }
+      }, [isHomePage]);
 
     useEffect(() => {
         // Additional logic you want to run only on the client side
@@ -25,10 +58,27 @@ export default function MainNav() {
           // Cleanup logic if needed
         };
     }, []); 
+
+    const navAnimation = useSpring({
+        opacity: isNavVisible ? 1 : 0,
+        transform: isNavVisible ? 'translateY(0%)' : 'translateY(-100%)',
+        config: { tension: 155, friction: 20, delay: isHomePage ? 3000 : 0 }, // Apply delay only on the home page
+      });
+    
+      const navbarBgAnimation = useSpring({
+        backgroundColor: isHomePage
+          ? (isScrolled ? '#2C3642' : 'transparent') // Transparent or scroll-based color on the homepage
+          : '#2C3642', // Solid color on other pages
+        boxShadow: isScrolled ? '0 2px 2px 0 #D0B184' : '0 0px 0px 0 rgba(0,0,0,0)',
+        config: { duration: 300 }, // Adjust the duration for a smoother transition
+        height: '6vh'
+    });
     
     return (
         <>
-        <Navbar className={navbar_styles.custom_navbar} expand="lg">
+        { isNavVisible && 
+        <animated.div className={navbar_styles.navbar_height} style={{ ...navAnimation, ...navbarBgAnimation, width: '100%', position: 'fixed', top: 0, zIndex: 1000 }}>
+        <Navbar className={navbar_styles.custom_navbar} expand="lg" style={{ width: '100%', backgroundColor: 'transparent', height: 'inherit'}}>
             <Navbar.Brand href="/" className={`${navbar_styles.custom_navbar_item} px-4`}>Bike Shop</Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
@@ -48,6 +98,7 @@ export default function MainNav() {
                 {isAuthenticated() && <Nav.Link onClick={logout} className={`${navbar_styles.custom_navbar_item} px-4`}>Logout</Nav.Link>}     
             </Navbar.Collapse>
         </Navbar>
+        </animated.div> }
         </>
     )
 }
