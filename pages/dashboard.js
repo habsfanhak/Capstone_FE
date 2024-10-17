@@ -5,7 +5,7 @@ import { isAuthenticated, readToken, getBikes } from '@/lib/userActions';
 import {useRouter} from 'next/router';
 import register_styles from '../styles/Register.module.css'
 import bike_styles from '../styles/Bikes.module.css'
-import { getPromoCodes, addPromoCode, deletePromoCode } from '@/lib/userActions';
+import { getPromoCodes, addPromoCode, deletePromoCode, updateBikeVisibility } from '@/lib/userActions';
 
 
 import { getBlogs, deleteBlogByTitle } from '@/lib/userActions';
@@ -70,9 +70,22 @@ export default function Dashboard() {
         handleDeleteBlog();
         handleDeleteCode();
     }, [codes]);
+
+    async function handleVisibilityChange(bikeModel, currentVisibility) {
+        try {
+            const newVisibility = !currentVisibility;
+            await updateBikeVisibility(bikeModel, newVisibility);
+            // Update the local state to reflect the change
+            setBikes(bikes.map(bike =>
+                bike.model === bikeModel ? { ...bike, isVisible: newVisibility } : bike
+            ));
+        } catch (error) {
+            console.error("Error updating bike visibility:", error);
+        }
+    }
     
     if (!blogs) return null
-    console.log(blogs)
+    // console.log(blogs)
 
     return (
         <>
@@ -169,6 +182,17 @@ export default function Dashboard() {
                                 </ListGroup>
                                 <Card.Body> 
                                     <Button variant="outline-primary"><Link href={`/bikePromo?model=${bike.model}`}>Manage</Link></Button>
+                                    &nbsp;
+                                    <Button variant="outline-info"><Link href={`/updateQuantity?model=${bike.model}`}>Update Quantity</Link></Button>
+                                    <br />
+                                    <br />
+                                    <Form.Check 
+                                        type="switch" 
+                                        id={`customSwitch${bike._id}`} 
+                                        label={bike.isVisible ? "Hide Bike" : "Show Bike"}   
+                                        checked={!bike.isVisible} 
+                                        onChange={() => handleVisibilityChange(bike.model, bike.isVisible)} 
+                                    />
                                 </Card.Body>
                             </Card>
                             <br/>

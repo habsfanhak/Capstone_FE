@@ -422,38 +422,33 @@ export default function Bikes() {
             <Container>
                 <Row>
                     {message && bikes && <p>{message}</p>}
-                        {bikes.map((bike) => {
-                            return (
-                                <Col sm={12} md={4} key={bike._id}>
-                                    <Card className={bike_styles.custom_card}>
-                                        <Card.Body>
-                                            {bike.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} />}
-                                            <Card.Title style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <span>{bike.brand}</span>
-                                                { !checkFavourite(bike._id) && <span className={bike_styles.star} onClick={() => handleStarClick(bike, true)}>☆</span>}
-                                                { checkFavourite(bike._id) && <span className={bike_styles.star} onClick={() => handleStarClick(bike, false)}>★</span>}
 
-                                            </Card.Title>
-                                            <Card.Text>
-                                                {bike.model}
-                                            </Card.Text>
-                                        </Card.Body>
-                                        <ListGroup className="list-group-flush">
-                                            <ListGroup.Item>Type: {bike.type}</ListGroup.Item>
-
-                                            <ListGroup.Item>Price: ${bike.price}</ListGroup.Item>
-                                            <ListGroup.Item>Available: {bike.available_quantity || 'Not Available'}</ListGroup.Item>
-                                        </ListGroup>
-                                        <Card.Body>
-                                            <Button variant="outline-primary"><Link href={`/bike?model=${bike.model}`}>View</Link></Button> &nbsp; 
-                                            <Button variant="primary" onClick={() => addToCart(t.decoded.email, bike.model)}>Add to Cart</Button>
-                                        </Card.Body>
-                                    </Card>
-                                    <br/>
-                                </Col>
-                            
-                            )
-                        })}
+                    {/* check for the bike if their bike.available_quantity is greater than 0 then check if bike.isInvisible is false */}
+                    {bikes.map((bike) => (
+                        (bike.available_quantity > 0 && bike.isVisible == true) && (
+                            <Col sm={12} md={4} key={bike._id}>
+                            <Card className={bike_styles.custom_card}>
+                                <Card.Body>
+                                {bike.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} />}
+                                <Card.Title style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <span>{bike.brand}</span>
+                                    {!checkFavourite(bike._id) && (
+                                    <span className={bike_styles.star} onClick={() => handleStarClick(bike._id, true)}>☆</span>
+                                    )}
+                                    {checkFavourite(bike._id) && (
+                                    <span className={bike_styles.star} onClick={() => handleStarClick(bike._id, false)}>★</span>
+                                    )}
+                                </Card.Title>
+                                <Card.Text>{bike.model}</Card.Text>
+                                <Card.Text>Price: ${bike.price}</Card.Text>
+                                <Link href={`/bikes/${bike._id}`}>
+                                    <Button variant="primary">View Details</Button>
+                                </Link>
+                                </Card.Body>
+                            </Card>
+                            </Col>
+                        )
+                    ))}
                     
                 </Row>
             </Container>
