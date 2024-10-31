@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import register_styles from '../styles/Register.module.css'
 import Image from "next/image";
 import { Form } from "react-bootstrap";
-import { getSalePrice, addSale, deleteSale } from "@/lib/userActions";
+import { getSalePrice, addSale, deleteSale, deleteBike } from "@/lib/userActions";
 
 export default function Bike(){
     const [bike, setBike] = useState();
@@ -47,6 +47,17 @@ export default function Bike(){
         try{
             await deleteSale(model);
             setSale(null)
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    async function handleDeleteBike(e) {
+        e.preventDefault();
+
+        try{
+            await deleteBike(model);
+            router.push('/dashboard');
         }catch(err){
             console.log(err);
         }
@@ -98,6 +109,15 @@ export default function Bike(){
                             <p><b>Price:</b> $ {sale}</p><br/>
                             <Button variant="danger" onClick={handleDeleteSale}>End Sale</Button>
                         </>}
+
+                        <br/>
+                        <br/>
+                        <br/>
+                        <hr/>
+                        <br/>
+                        <h4>Delete Bike from Listing</h4>
+                        <br/>
+                        <Button variant="danger" onClick={handleDeleteBike}>Delete</Button>
                     </Card.Body>
                 </Card>
             </Container>
