@@ -1,5 +1,5 @@
-import { Container, Card, Button } from "react-bootstrap";
-import { getBlogs } from '../lib/userActions'
+import { Container, Card, Button, Row, Col, Form, ListGroup } from "react-bootstrap";
+import { getBlogs, searchBikes } from '../lib/userActions'
 
 import { useSpring, animated } from 'react-spring';
 
@@ -7,6 +7,7 @@ import {useState, useEffect, useRef } from'react';
 import { useRouter } from 'next/router';
 
 import styles from '../styles/Navbar.module.css'
+import bike_styles from '../styles/Bikes.module.css'
 
 import Link from 'next/link';
 
@@ -18,6 +19,10 @@ export default function Home() {
   const [isVideoVisible, setVideoVisible] = useState(false);
   const [isLogoVisible, setLogoVisible] = useState(false);
   const [initImg, setInitImg] = useState(true);
+
+  const [field1, setField1] = useState("")
+  const [bikes, setBikes] = useState([])
+  const [searched, setSearched] = useState(false)
 
   useEffect(() => {
     async function fetchData() {
@@ -68,8 +73,14 @@ export default function Home() {
     config: { tension: 155, friction: 20, delay: 500 },
   });
 
-  
-  
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setSearched(true)
+    const keywords = field1.split(' ');
+    const resultBikes = await searchBikes(keywords);
+
+    setBikes(resultBikes);
+}
 
   return (
     <>
@@ -115,6 +126,55 @@ export default function Home() {
 
       <Container className={styles.rethink} style={{marginTop: '10vh'}}>
         Welcome to bike shop, the premier destination for purchasing and servicing your cycle. Feel free to browse our selection or book an appointment.
+        <br/><br/>
+        <h1 className={styles.bebasfontonly} style={{textAlign: 'center', marginTop: '5vh'}}>What's your ideal bike?</h1>
+      </Container>
+
+      <Container className={styles.rethink} style={{marginTop: '1vh'}}>
+          <Form onSubmit={handleSubmit}>
+            <Row>
+              <Col md={10}>
+                <Form.Control type="text" value={field1} onChange={e => setField1(e.target.value)} />
+              </Col>
+              <Col md={2}>
+                <Button onClick={handleSubmit} type="submit" variant="outline-primary">Submit</Button>
+              </Col>
+            </Row>
+          </Form>
+      </Container>
+
+      <Container className={styles.rethink} style={{marginTop: '2vh'}}>
+        <Row>
+      {bikes.map((bike) => {
+          return (
+              <Col sm={12} md={4} key={bike._id}>
+                  <Card className={bike_styles.custom_card}>
+                      <Card.Body>
+                          {bike.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} />}
+                          <Card.Title style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <span>{bike.brand}</span>
+                          </Card.Title>
+                          <Card.Text>
+                              {bike.model}
+                          </Card.Text>
+                      </Card.Body>
+                      <ListGroup className="list-group-flush">
+                          <ListGroup.Item>Type: {bike.type}</ListGroup.Item>
+
+                          <ListGroup.Item>Price: ${bike.price}</ListGroup.Item>
+                          <ListGroup.Item>Available: {bike.available_quantity || 'Not Available'}</ListGroup.Item>
+                      </ListGroup>
+                      <Card.Body>
+                          <Button variant="outline-primary"><Link href={`/bike?model=${bike.model}`}>View</Link></Button> &nbsp; 
+                      </Card.Body>
+                  </Card>
+                  <br/>
+              </Col>
+          
+          )
+      })}
+      {bikes.length == 0 && searched && <p style={{textAlign: 'center'}}>No results found.</p>}
+      </Row>
       </Container>
 
       <div style={{
@@ -138,7 +198,7 @@ export default function Home() {
         <Container>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", margin: "20px", marginTop: '4vh' }}>
   {blogs.map((blog) => (
-    <div key={blog.id} style={{ width: "calc(50% - 10px)", margin: "5px" }}>
+    <div key={blog.id} style={{ width: "calc(50% - 10px)", margin: "5px" }} className={styles.rethink}>
       <Link href={`/${blog._id}`} passHref legacyBehavior>
         <a target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>
           <Card 
