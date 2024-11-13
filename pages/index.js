@@ -127,7 +127,7 @@ export default function Home() {
       <Container className={styles.rethink} style={{marginTop: '10vh'}}>
         Welcome to bike shop, the premier destination for purchasing and servicing your cycle. Feel free to browse our selection or book an appointment.
         <br/><br/>
-        <h1 className={styles.bebasfontonly} style={{textAlign: 'center', marginTop: '5vh'}}>What's your ideal bike?</h1>
+        <h1 className={styles.bebasfontonly} style={{textAlign: 'center', marginTop: '5vh'}}>What&apos;s your ideal bike?</h1>
       </Container>
 
       <Container className={styles.rethink} style={{marginTop: '1vh'}}>
