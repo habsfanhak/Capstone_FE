@@ -35,6 +35,10 @@
   font-size: 10vh;
 }
 
+.bebasfontonly {
+  font-family: 'Bebas';
+}
+
 .custom_navbar_item {
     font-family: "Rethink";
     color: #00C399;
