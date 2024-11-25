@@ -142,7 +142,7 @@ export default function BlogPerPage(){
                                                 onChange={(e) => setNewCommentContentUI(e.target.value)} 
                                             />
                                         </Form.Group>
-                                        <Button variant="primary" onClick={() => handleUpdateComment(comment.content, newCommentContentUI, currentDate, currentTime)}>
+                                        <Button variant="primary" onClick={() => handleUpdateComment(comment.content, newCommentContentUI, mDate, mTime)}>
                                             Save
                                         </Button>
     
