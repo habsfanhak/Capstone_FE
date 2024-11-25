@@ -35,3 +35,12 @@
     justify-content: flex-end;
 }
 
+.side_by_side {
+    display: flex;
+    justify-content: space-between;
+}
+
+.small_text {
+    font-size: 10px;
+    color: #585757;
+}
