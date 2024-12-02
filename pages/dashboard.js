@@ -90,7 +90,7 @@ export default function Dashboard() {
     return (
         <>
         <br/>
-        <Container style={{marginTop: '6vh'}}>
+        <Container style={{marginTop: '6vh'}} className={bike_styles.rethink}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h1>Dashboard</h1>
             </div><br/>
@@ -118,21 +118,17 @@ export default function Dashboard() {
             <h5>Active Codes</h5>
             {codes.map((promoCode) =>{
                 return(
-                    <Row key={promoCode.code}>
-                        <Col>
-                            <Card key={promoCode.code} style={{ width: '20rem' }}>
-                                <Card.Body>
-                                    <span><b>{promoCode.code}</b> - {promoCode.discount}% Off</span>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>
-                            <Button variant="danger" onClick={() => handleDeleteCode(promoCode.code)}>Delete</Button>
-                        </Col>
-                        <Col>
-                        
-
-                        </Col>
+                    <Row key={promoCode.code} className="align-items-center mb-3">
+                    <Col xs={9} md={10}>
+                        <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <span><b>{promoCode.code}</b> - {promoCode.discount}% Off</span>
+                        </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col xs={3} md={2} className="text-end">
+                        <Button variant="danger" onClick={() => handleDeleteCode(promoCode.code)}>Delete</Button>
+                    </Col>
                     </Row>
                 );
             })}

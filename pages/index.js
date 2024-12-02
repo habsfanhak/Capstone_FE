@@ -133,13 +133,14 @@ export default function Home() {
       <Container className={styles.rethink} style={{marginTop: '1vh'}}>
           <Form onSubmit={handleSubmit}>
             <Row>
-              <Col md={10}>
+              <Col>
                 <Form.Control type="text" value={field1} onChange={e => setField1(e.target.value)} />
               </Col>
-              <Col md={2}>
-                <Button onClick={handleSubmit} type="submit" variant="outline-primary">Submit</Button>
-              </Col>
             </Row>
+            <br/>
+            <div style={{display: "flex", justifyContent: 'center'}}>
+              <Button onClick={handleSubmit} type="submit" variant="outline-primary">Submit</Button>
+            </div>
           </Form>
       </Container>
 

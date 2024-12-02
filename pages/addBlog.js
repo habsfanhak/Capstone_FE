@@ -3,7 +3,7 @@ import { useState } from 'react';
 import {useRouter} from 'next/router';
 
 import { addBlog } from '@/lib/userActions';
-
+import bike_styles from '../styles/Bikes.module.css'
 import addBlog_styles from '../styles/Addblog.module.css';
 
 
@@ -49,7 +49,7 @@ export default function AddBlog() {
     return (
         <>
         <br/>
-        <Container style={{marginTop: '6vh'}}>
+        <Container style={{marginTop: '6vh'}} className={bike_styles.rethink}>
             <Card className={addBlog_styles.custom_card}>
                 <Card.Body>
                     <div>

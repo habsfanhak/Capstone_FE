@@ -89,7 +89,7 @@ export default function CheckoutCart() {
     return (
         <>
             <br />
-            <Container>
+            <Container style={{marginTop: '6vh'}}>
                 <Card className={register_styles.custom_card}>
                     <Card.Body>
                         <h2>Checkout</h2>
