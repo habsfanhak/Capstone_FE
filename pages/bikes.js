@@ -261,19 +261,27 @@ export default function Bikes() {
             <center><h2 style={{fontFamily: 'rethink'}}>Bikes</h2></center>
             <br/>
 
-            <Container style={{marginTop: '6vh'}}>
+            <Container style={{marginTop: '6vh'}} className={bike_styles.rethink}>
                 
-                <Row>
-                    <Col>
-                    <Form.Control type="text" placeholder="Search by keyword" value={search} onChange={e => setSearch(e.target.value)} />
-                    </Col>
-                    <Col>
-                    <Button variant="outline-secondary" onClick={handleSearch}>Search</Button>
-                    &nbsp;&nbsp;
-                    <Button variant="outline-secondary" onClick={clearSearch}>Clear Search</Button>
-                    </Col>
+            <Row className="mb-3">
+                <Col xs={12}>
+                    <Form.Control 
+                    type="text" 
+                    placeholder="Search by keyword" 
+                    value={search} 
+                    onChange={e => setSearch(e.target.value)} 
+                    />
+                </Col>
                 </Row>
-                <br/>
+                <Row className="text-center">
+                <Col xs={6} md={2} sm={6} className="mb-2">
+                    <Button variant="outline-secondary" onClick={handleSearch} className="w-100">Search</Button>
+                </Col>
+                <Col xs={6} md={2} sm={6}>
+                    <Button variant="outline-secondary" onClick={clearSearch} className="w-100">Clear Search</Button>
+                </Col>
+                </Row>
+                                <br/>
                 <Row>
                     <Col>
                         <Button variant="outline-secondary" onClick={() => setOpen(!open)} aria-controls="filter" aria-expanded={open}>
@@ -419,7 +427,7 @@ export default function Bikes() {
             <br/>
             <br/>
 
-            <Container>
+            <Container className={bike_styles.rethink}>
                 <Row>
                     {message && bikes && <p>{message}</p>}
                         {bikes.map((bike) => {

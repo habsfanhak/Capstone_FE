@@ -3,7 +3,7 @@ import { useState } from 'react';
 import {useRouter} from 'next/router';
 
 import { addBike } from '@/lib/userActions';
-
+import bike_styles from '../styles/Bikes.module.css'
 import addBike_styles from '../styles/Addbike.module.css';
 
 
@@ -54,7 +54,7 @@ export default function AddBike() {
     return (
         <>
         <br/>
-        <Container style={{marginTop: '6vh'}}>
+        <Container style={{marginTop: '6vh'}} className={bike_styles.rethink}>
             <Card className={addBike_styles.custom_card}>
                 <Card.Body>
                     <div>

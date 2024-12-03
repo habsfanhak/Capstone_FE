@@ -56,7 +56,7 @@ export default function User() {
         <>
             <br/>
             <br/>
-            <Container style={{fontFamily: 'rethink'}}>
+            <Container style={{fontFamily: 'rethink', marginTop: '6vh'}}>
                 {warning && <>
                     <br />
                     <Alert variant='danger'>
