@@ -62,7 +62,7 @@ export default function AddPayment() {
                 <Row>
                     <Form.Group>
                         <Form.Label>Card Number:</Form.Label>
-                        <Form.Control required type="text" id="cardNum" name="cardNum" onChange={e => setCardNum(e.target.value)} placeholder="16-Digit Card Number"/>
+                        <Form.Control required type="text" id="cardNum" name="cardNum" onChange={e => setCardNum(e.target.value)} maxLength="16" placeholder="16-Digit Card Number"/>
                     </Form.Group>
 
                     <br />
