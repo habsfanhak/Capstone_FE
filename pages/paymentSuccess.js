@@ -4,6 +4,7 @@ import { updateQuantity } from "@/lib/userActions";
 import { addOrder } from "@/lib/userActions";
 import { useEffect } from "react";
 import { readToken } from "@/lib/userActions";
+import { deleteCart } from "@/lib/userActions";
 
 export default function PaymentSuccess() {
     const router = useRouter();
@@ -16,7 +17,8 @@ export default function PaymentSuccess() {
                 const itemArray = items.split(',').map(item => item.trim());
 
                 for (let item of itemArray) {
-                    await updateQuantity(item);
+                    const bikeModel = item.split(' ').pop();
+                    await updateQuantity(bikeModel);
                 }
 
                 try {
@@ -24,6 +26,8 @@ export default function PaymentSuccess() {
                 } catch (error) {
                     console.error('Error adding order:', error);
                 }
+
+                deleteCart(token.decoded.email);
             }
         }
 

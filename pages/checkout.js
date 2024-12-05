@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import register_styles from '../styles/Register.module.css'
 import { getSalePrice } from "@/lib/userActions";
+import { getUserPayment } from "@/lib/userActions";
+import { readToken } from "@/lib/userActions";
+
 
 export default function Checkout(){
     const [bike, setBike] = useState();
@@ -13,26 +16,32 @@ export default function Checkout(){
     const [added, setAdded] = useState("");
     const router = useRouter();
     const model = router.query.model;
+    const token = readToken();
+
 
     useEffect(() => {
         async function fetchData() {
             const data = await getBike(model);
             setBike(data);
 
+
             const sp = await getSalePrice(model);
             setSalePrice(sp);
         }
         fetchData();
-    }, [model]);
+    }, [model, cards]);
+
 
     if(!bike){
         return (<><div><p>Loading....</p><p/></div></>)
     }
 
+
     async function nvm(e){
         e.preventDefault();
         console.log(1);
     }
+
 
     async function handleSubmit(e){
         e.preventDefault();
@@ -41,8 +50,10 @@ export default function Checkout(){
         window.location.href = url;
     }
 
+
     async function handlePromo(e){
         e.preventDefault();
+
 
         try{
             setDiscount(await getDiscount(code));
@@ -51,8 +62,10 @@ export default function Checkout(){
             setDiscount(0)
         }
 
+
         setAdded(1);
     }
+
 
     const calculateTotalPrice = () => {
         let basePrice = bike.price;
@@ -62,14 +75,15 @@ export default function Checkout(){
         const tax = basePrice * 0.13;
         const shipping = 15;
         const totalBeforeDiscount = basePrice + tax + shipping;
-        
+       
         if (discount > 0) {
-          const discountAmount = totalBeforeDiscount * (discount/100); // Assuming discount is a percentage
+          const discountAmount = totalBeforeDiscount * (discount/100);
           return totalBeforeDiscount - discountAmount;
         }
-        
+       
         return totalBeforeDiscount;
     };
+
 
     const getBasePrice = () => {
         let basePrice = bike.price;
@@ -77,8 +91,11 @@ export default function Checkout(){
             basePrice = salePrice;
         }
 
+
         return basePrice;
     }
+
+
 
 
     return(
@@ -107,6 +124,7 @@ export default function Checkout(){
                     </Card.Body>
                 </Card><br /><br />
 
+
                 <div>
                     <Form className={register_styles.custom_card} onSubmit={handlePromo}>
                         <Row>
@@ -117,7 +135,7 @@ export default function Checkout(){
                                 <Button type="submit" variant="outline-success" disabled={added}>Add</Button>
                             </Col>
                             <Col>
-                            
+                           
                             </Col>
                         </Row>
                     </Form><br/>
@@ -159,7 +177,7 @@ export default function Checkout(){
                         <Button type="submit" variant="success">Pay Now</Button>
                     </Form>
                 </div>
-            </Container> 
+            </Container>
         </>
     )
 }
