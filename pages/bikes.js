@@ -1,4 +1,4 @@
-import { Button, Card, ListGroup, Container, Row, Col, Form, Collapse} from 'react-bootstrap';
+import { Button, Card, ListGroup, Container, Row, Col, Form, Collapse, Offcanvas} from 'react-bootstrap';
 import { isAuthenticated, addFavourite, readToken } from '@/lib/userActions';
 import { getBikes, getFavourites, removeFavourite } from "@/lib/userActions";
 import { useState, useEffect } from "react";
@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { format } from '@cloudinary/url-gen/actions/delivery';
 import { getSalePrice } from '@/lib/userActions';
 import { addToCart } from '@/lib/userActions';
+import Image from 'next/image';
 
 
 
@@ -18,6 +19,12 @@ export default function Bikes() {
     const [search, setSearch] = useState('');
     const [message, setMessage] = useState('');
     const [salePrice, setSalePrice] = useState("");
+
+    // comparing
+    const [compareCanva1, setCompareCanva1] = useState(null);
+    const [compareCanva2, setCompareCanva2] = useState(null);
+    const [show, setShow] = useState(false)
+
 
     // filtering
     const [open, setOpen] = useState(false);
@@ -79,6 +86,13 @@ export default function Bikes() {
         handleFilter();
         
     }, [mountain, road, hybrid, commuter, foldingBike, aluminum, carbon, steel, lessTwenty, twenty, twentyFour, front, all, frontAndBack, none, single, multi, price1, price2, price, wishlisted]);
+
+
+    useEffect(() => {
+        if (compareCanva1 && compareCanva2) {
+            setShow(true);
+        }
+    }, [compareCanva1, compareCanva2]);
 
     async function handleSearch() {
         
@@ -250,6 +264,64 @@ export default function Bikes() {
 
     function checkFavourite(id) {
         return favourites.includes(id); // Assuming favourites is an array of bike IDs          
+    }
+
+    function handleSetBike(bike) {
+        if (compareCanva1 == null) {
+            setCompareCanva1(bike)
+        }
+        else if (compareCanva2 == null) {
+            setCompareCanva2(bike)
+        }
+    }
+
+    function handleClose() {
+        setShow(false)
+        setCompareCanva1(null)
+        setCompareCanva2(null)
+    }
+
+    function handleDesetBike(bike) {
+
+        if (compareCanva1 != null)
+        {
+            if (compareCanva1._id == bike._id) {
+                setCompareCanva1(null)
+                return true
+            }
+        }
+
+        if (compareCanva2 != null)
+        {
+            if (compareCanva2._id == bike._id) {
+                setCompareCanva2(null)
+                return true
+            }
+        }
+
+        return false
+    }
+
+    function bikeCompSelected(bike) {
+        if (compareCanva1 == null) {
+            return false;
+        }
+        else {
+            if (compareCanva1._id == bike._id) {
+                return true
+            }
+        }
+
+        if (compareCanva2 == null) {
+            return false;
+        }
+        else {
+            if (compareCanva2._id == bike._id) {
+                return true
+            }
+        }
+
+        return false
     }
 
     if (!bikes) return null
@@ -438,9 +510,13 @@ export default function Bikes() {
                                             {bike.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} />}
                                             <Card.Title style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <span>{bike.brand}</span>
-                                                { !checkFavourite(bike._id) && <span className={bike_styles.star} onClick={() => handleStarClick(bike, true)}>☆</span>}
-                                                { checkFavourite(bike._id) && <span className={bike_styles.star} onClick={() => handleStarClick(bike, false)}>★</span>}
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                    { !bikeCompSelected(bike) && <Image onClick={() => handleSetBike(bike)} className={bike_styles.star} src={"/compare.svg"} width={35} height={35} />}
+                                                    { bikeCompSelected(bike) && <Image onClick={() => handleDesetBike(bike)} className={bike_styles.star} src={"/compare_2.svg"} width={35} height={35} />}
 
+                                                    { !checkFavourite(bike._id) && <span className={bike_styles.star} onClick={() => handleStarClick(bike, true)}>☆</span> }
+                                                    { checkFavourite(bike._id) && <span className={bike_styles.star} onClick={() => handleStarClick(bike, false)}>★</span> }
+                                                </div>
                                             </Card.Title>
                                             <Card.Text>
                                                 {bike.model}
@@ -454,7 +530,7 @@ export default function Bikes() {
                                         </ListGroup>
                                         <Card.Body>
                                             <Button variant="outline-primary"><Link href={`/bike?model=${bike.model}`}>View</Link></Button> &nbsp; 
-                                            <Button variant="primary" onClick={() => addToCart(t.decoded.email, bike.model)}>Add to Cart</Button>
+                                            <Button variant="primary" onClick={() => addToCart(t.decoded.email, bike.model)}>Add to Cart</Button>&nbsp; 
                                         </Card.Body>
                                     </Card>
                                     <br/>
@@ -465,6 +541,69 @@ export default function Bikes() {
                     
                 </Row>
             </Container>
+
+            {compareCanva1 && compareCanva2 && <Offcanvas show={show} onHide={handleClose}>
+                <Offcanvas.Header closeButton>
+                <Offcanvas.Title>Comparison</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    <Card className={bike_styles.custom_card}>
+                        <Card.Body>
+                            {compareCanva1.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${compareCanva1.image}`} />}
+                            <Card.Title style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span>{compareCanva1.brand}</span>
+                            </Card.Title>
+                            <Card.Text>
+                                {compareCanva1.model}
+                            </Card.Text>
+                        </Card.Body>
+                        <ListGroup className="list-group-flush">
+                            <ListGroup.Item>Type: {compareCanva1.type}</ListGroup.Item>
+
+                            <ListGroup.Item
+                            >Price: <span 
+                                style={{
+                                    color: compareCanva1.price > compareCanva2.price ? 'red' : 'green',
+                                }}>
+                                    ${compareCanva1.price}
+                                </span>
+                            </ListGroup.Item>
+                            <ListGroup.Item>Available: {compareCanva1.available_quantity || 'Not Available'}</ListGroup.Item>
+                        </ListGroup>
+                        <Card.Body>
+                            <Button variant="outline-primary"><Link href={`/bike?model=${compareCanva1.model}`}>View</Link></Button> &nbsp; 
+                            <Button variant="primary" onClick={() => addToCart(t.decoded.email, compareCanva1.model)}>Add to Cart</Button>&nbsp; 
+                        </Card.Body>
+                    </Card>
+                    <br/>
+                    <Card className={bike_styles.custom_card}>
+                        <Card.Body>
+                            {compareCanva2.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${compareCanva2.image}`} />}
+                            <Card.Title style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span>{compareCanva2.brand}</span>
+                            </Card.Title>
+                            <Card.Text>
+                                {compareCanva2.model}
+                            </Card.Text>
+                        </Card.Body>
+                        <ListGroup className="list-group-flush">
+                            <ListGroup.Item>Type: {compareCanva2.type}</ListGroup.Item>
+
+                            <ListGroup.Item >
+                                Price:  <span 
+                                style={{
+                                    color: compareCanva2.price > compareCanva1.price ? 'red' : 'green',
+                                }}>${compareCanva2.price}</span>
+                            </ListGroup.Item>
+                            <ListGroup.Item>Available: {compareCanva2.available_quantity || 'Not Available'}</ListGroup.Item>
+                        </ListGroup>
+                        <Card.Body>
+                            <Button variant="outline-primary"><Link href={`/bike?model=${compareCanva2.model}`}>View</Link></Button> &nbsp; 
+                            <Button variant="primary" onClick={() => addToCart(t.decoded.email, compareCanva2.model)}>Add to Cart</Button>&nbsp; 
+                        </Card.Body>
+                    </Card>
+                </Offcanvas.Body>
+            </Offcanvas>}
         </>
     )
 }
