@@ -71,6 +71,12 @@ export default function Bikes() {
     useEffect(() => {
         async function fetchData() {
             const token = readToken()
+
+            if (!token || !token.decoded) {
+                console.error('Token is invalid or missing');
+                return; // Exit early to prevent further errors
+            }
+            
             const email = token.decoded.email
             
             const data = await getBikes();

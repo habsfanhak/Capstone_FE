@@ -1,9 +1,11 @@
 import { Container, Card, Button, Row, Col, Form, ListGroup } from "react-bootstrap";
+
 import { getBlogs, searchBikes } from '../lib/userActions'
+
 
 import { useSpring, animated } from 'react-spring';
 
-import {useState, useEffect, useRef } from'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 
 import styles from '../styles/Navbar.module.css'
@@ -80,12 +82,27 @@ export default function Home() {
     const resultBikes = await searchBikes(keywords);
 
     setBikes(resultBikes);
-}
+  }
+
+  const scrollContainerRef = useRef(null);
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
+
 
   return (
     <>
-        {/* Beginning Animations + Title Video */}
-        <div style={{ position: 'relative', overflow: 'hidden', height: '100vh', backgroundColor: '#000000' }}>
+      {/* Beginning Animations + Title Video */}
+      <div style={{ position: 'relative', overflow: 'hidden', height: '100vh', backgroundColor: '#000000' }}>
         {/* Video */}
         <animated.video
           autoPlay
@@ -105,11 +122,11 @@ export default function Home() {
             ...videoAnimation
           }}
         >
-          <source type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' src="/promo.mp4"/>
+          <source type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' src="/promo.mp4" />
         </animated.video>
 
-         {/* Logo */}
-         <animated.img
+        {/* Logo */}
+        <animated.img
           src="/bike.svg"
           alt="Logo"
           style={{
@@ -121,111 +138,177 @@ export default function Home() {
             ...logoAnimation,
           }}
         />
-        </div>
-      <br/>
+      </div>
+      <br />
 
-      <Container className={styles.rethink} style={{marginTop: '10vh'}}>
+      <Container className={styles.rethink} style={{ marginTop: '10vh' }}>
         Welcome to bike shop, the premier destination for purchasing and servicing your cycle. Feel free to browse our selection or book an appointment.
-        <br/><br/>
-        <h1 className={styles.bebasfontonly} style={{textAlign: 'center', marginTop: '5vh'}}>What&apos;s your ideal bike?</h1>
+        <br /><br />
+        <h1 className={styles.bebasfontonly} style={{ textAlign: 'center', marginTop: '5vh' }}>What&apos;s your ideal bike?</h1>
       </Container>
 
-      <Container className={styles.rethink} style={{marginTop: '1vh'}}>
-          <Form onSubmit={handleSubmit}>
-            <Row>
-              <Col>
-                <Form.Control type="text" value={field1} onChange={e => setField1(e.target.value)} />
-              </Col>
-            </Row>
-            <br/>
-            <div style={{display: "flex", justifyContent: 'center'}}>
-              <Button onClick={handleSubmit} type="submit" variant="outline-primary">Submit</Button>
-            </div>
-          </Form>
+      <Container className={styles.rethink} style={{ marginTop: '1vh' }}>
+        <Form onSubmit={handleSubmit}>
+          <Row>
+            <Col>
+              <Form.Control type="text" value={field1} onChange={e => setField1(e.target.value)} />
+            </Col>
+          </Row>
+          <br />
+          <div style={{ display: "flex", justifyContent: 'center' }}>
+            <Button onClick={handleSubmit} type="submit" variant="outline-primary">Submit</Button>
+          </div>
+        </Form>
       </Container>
 
-      <Container className={styles.rethink} style={{marginTop: '2vh'}}>
+      <Container className={styles.rethink} style={{ marginTop: '2vh' }}>
         <Row>
-      {bikes.map((bike) => {
-          return (
+          {bikes.map((bike) => {
+            return (
               <Col sm={12} md={4} key={bike._id}>
-                  <Card className={bike_styles.custom_card}>
-                      <Card.Body>
-                          {bike.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} />}
-                          <Card.Title style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                              <span>{bike.brand}</span>
-                          </Card.Title>
-                          <Card.Text>
-                              {bike.model}
-                          </Card.Text>
-                      </Card.Body>
-                      <ListGroup className="list-group-flush">
-                          <ListGroup.Item>Type: {bike.type}</ListGroup.Item>
+                <Card className={bike_styles.custom_card}>
+                  <Card.Body>
+                    {bike.image && <Card.Img src={`https://res.cloudinary.com/dm5pccmxq/image/upload/${bike.image}`} />}
+                    <Card.Title style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span>{bike.brand}</span>
+                    </Card.Title>
+                    <Card.Text>
+                      {bike.model}
+                    </Card.Text>
+                  </Card.Body>
+                  <ListGroup className="list-group-flush">
+                    <ListGroup.Item>Type: {bike.type}</ListGroup.Item>
 
-                          <ListGroup.Item>Price: ${bike.price}</ListGroup.Item>
-                          <ListGroup.Item>Available: {bike.available_quantity || 'Not Available'}</ListGroup.Item>
-                      </ListGroup>
-                      <Card.Body>
-                          <Button variant="outline-primary"><Link href={`/bike?model=${bike.model}`}>View</Link></Button> &nbsp; 
-                      </Card.Body>
-                  </Card>
-                  <br/>
+                    <ListGroup.Item>Price: ${bike.price}</ListGroup.Item>
+                    <ListGroup.Item>Available: {bike.available_quantity || 'Not Available'}</ListGroup.Item>
+                  </ListGroup>
+                  <Card.Body>
+                    <Button variant="outline-primary"><Link href={`/bike?model=${bike.model}`}>View</Link></Button> &nbsp;
+                  </Card.Body>
+                </Card>
+                <br />
               </Col>
-          
-          )
-      })}
-      {bikes.length == 0 && searched && <p style={{textAlign: 'center'}}>No results found.</p>}
-      </Row>
+
+            )
+          })}
+          {bikes.length == 0 && searched && <p style={{ textAlign: 'center' }}>No results found.</p>}
+        </Row>
       </Container>
 
       <div style={{
-  width: '99vw',
-  height: '30vh',
-  backgroundImage: 'url(/road.jpg)', // Path to your image
-  backgroundSize: 'cover', // This ensures the image covers the div and is cropped if necessary
-  backgroundPosition: 'center', // This keeps the image centered
-  backgroundRepeat: 'no-repeat', // No image repetition
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  color: 'black',
-  textAlign: 'center',
-  marginTop: '5vh',
-}}>
-  <h1 className={styles.bebas}>Explore New Roads</h1>
-</div>
+        width: '99vw',
+        height: '30vh',
+        backgroundImage: 'url(/road.jpg)', // Path to your image
+        backgroundSize: 'cover', // This ensures the image covers the div and is cropped if necessary
+        backgroundPosition: 'center', // This keeps the image centered
+        backgroundRepeat: 'no-repeat', // No image repetition
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'black',
+        textAlign: 'center',
+        marginTop: '5vh',
+      }}>
+        <h1 className={styles.bebas}>Explore New Roads</h1>
+      </div>
 
 
-        <Container>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", margin: "20px", marginTop: '4vh' }}>
-  {blogs.map((blog) => (
-    <div key={blog.id} style={{ width: "calc(50% - 10px)", margin: "5px" }} className={styles.rethink}>
-      <Link href={`/${blog._id}`} passHref legacyBehavior>
-        <a target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <Card 
-            style={{ 
-              width: '100%', 
-              height: '400px', 
-              backgroundImage: `url(https://res.cloudinary.com/dm5pccmxq/image/upload/${blog.image})`, 
-              backgroundSize: 'cover', 
-              backgroundPosition: 'center', 
-              color: 'white', 
-              position: 'relative' 
-            }}
-          >
-            <Card.Body style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '20px', height: '100%' }}>
-              <Card.Title>{blog.title}</Card.Title>
-              <Card.Text>
-                {blog.content.substring(0, 50)}...
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </a>
-      </Link>
-    </div>
-  ))}
-</div>
-</Container>
+      <Container style={{ position: "relative", marginTop: "4vh" }}>
+        {/* Left Arrow */}
+        <Button
+          onClick={scrollLeft}
+          style={{
+            position: "absolute",
+            left: "0",
+            top: "50%",
+            transform: "translateY(-50%)",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            color: "white",
+            border: "none",
+            borderRadius: "50%",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+            zIndex: 1,
+          }}
+        >
+          &#8249;
+        </Button>
+
+        {/* Scrollable Blog Container */}
+        <div
+          ref={scrollContainerRef}
+          style={{
+            display: "flex",
+            overflowX: "auto",
+            whiteSpace: "nowrap",
+            padding: "20px",
+            scrollbarWidth: "none", // For Firefox
+            msOverflowStyle: "none", // For IE and Edge
+          }}
+        >
+          {blogs.map((blog) => (
+            <div
+              key={blog.id}
+              style={{
+                flex: "0 0 auto",
+                width: "500px",
+                margin: "0 40px",
+              }}
+              className={styles.rethink}
+            >
+              <Link href={`/${blog._id}`} passHref legacyBehavior>
+                <a target="_blank" style={{ textDecoration: "none", color: "inherit" }}>
+                  <Card
+                    style={{
+                      width: "100%",
+                      height: "400px",
+                      backgroundImage: `url(https://res.cloudinary.com/dm5pccmxq/image/upload/${blog.image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      color: "white",
+                      position: "relative",
+                    }}
+                  >
+                    <Card.Body
+                      style={{
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        padding: "20px",
+                        height: "100%",
+                      }}
+                    >
+                      <Card.Title>{blog.title}</Card.Title>
+                      <Card.Text>{blog.content.substring(0, 50)}...</Card.Text>
+                    </Card.Body>
+                  </Card>
+                </a>
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        {/* Right Arrow */}
+        <Button
+          onClick={scrollRight}
+          style={{
+            position: "absolute",
+            right: "0",
+            top: "50%",
+            transform: "translateY(-50%)",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            color: "white",
+            border: "none",
+            borderRadius: "50%",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+            zIndex: 1,
+          }}
+        >
+          &#8250;
+        </Button>
+      </Container>
+
     </>
   );
 }
