@@ -14,7 +14,8 @@ import {
     deleteReply,
     replyingComment,
     commentReplied,
-    deleteReplies
+    deleteReplies,
+    cancelReply,
 } from "@/lib/userActions";
 
 import { Container, Card, Form, Button } from "react-bootstrap";
@@ -127,12 +128,19 @@ export default function BlogPerPage() {
     const handleAddReply = async (commentID, comment, email, fullName, reply) => {
         try {
             await addReply(commentID, email, fullName, reply);
-            commentReplied(comment);
+            await commentReplied(comment);
             console.log("Reply added successfully.");
             window.location.reload();
         } catch (error) {
             console.error("Error adding reply:", error);
         }
+    }
+
+    const handleCancelReply = async (comment) => {
+        await cancelReply(comment);
+        setReplyUI('');
+        console.log("Reply cancelled.");
+        window.location.reload();
     }
 
     const handleToUpdateReply = async (replyID) => {
@@ -233,7 +241,7 @@ export default function BlogPerPage() {
                                         <div className={comment_styles.side_by_side}>
                                             <span className={comment_styles.small_text}>Commented by: {comment.fullName}</span>
 
-                                            <span className={comment_styles.small_text}>Date: {comment.date}, {comment.time}</span>
+                                            <span className={comment_styles.small_text}>Date: {comment.date.split("T")[0]}, &nbsp; {comment.time}</span>
 
                                         </div>
 
@@ -282,6 +290,8 @@ export default function BlogPerPage() {
                                                 </Form.Group>
                                                 <br />
                                                 <Button variant="primary" onClick={() => handleAddReply(comment._id, comment.content, mEmail, mFullName, replyUI)}>Post</Button>
+                                                &nbsp;
+                                                <Button variant="danger" onClick={() => handleCancelReply(comment.content)}>Cancel</Button>
                                             </Form>
                                         }
 
@@ -323,7 +333,7 @@ export default function BlogPerPage() {
                                                                         Replied by: {reply.fullName}
                                                                     </span>
                                                                     <span className={comment_styles.small_text}>
-                                                                        Date: {reply.date}, {reply.time}
+                                                                        Date: {reply.date.split("T")[0]}, {reply.time}
                                                                     </span>
                                                                 </div>
                                                                 {(isAuthenticated()) && (
