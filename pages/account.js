@@ -32,6 +32,7 @@ export default function Account() {
     }
 
     async function deleteCard(num){
+        // Trigger redeploy
         await deletePayment(token.decoded.email, num);
         setCount(count + 1);
     }
